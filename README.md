@@ -21,5 +21,6 @@ And then I decided to scale it up using extra concepts taught outside class and 
 - Allowed conversion of notes from C Major to ANY key
 - And then, I made it possible to convert from ANY key to ANY key.
 - For those who aren't as acquianted with music theory and how key/scale conversion works, I also created the options to allow the program to explain in detail (how detailed, you can adjust for yourself) how exactly the conversion worked. It can also give simple music theory lessons, i guess.
-- And last but not least, it can auto-detect the key of the notes that you enter, saving time and effort! Its a cool feature that ~maybe~ works all the time. I'm not training a model for this little project.
+- Input Validation. Can't have the program crashing due to incorrect inputs!
+- And last but not least, it can auto-detect the key of the notes that you enter, saving time and effort! Its a cool feature that _maybe_ works all the time. I'm not training a model for this little project.
 
