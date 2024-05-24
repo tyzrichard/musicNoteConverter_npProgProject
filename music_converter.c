@@ -1,13 +1,18 @@
 #include <stdio.h>
 
 void main () {
-    char inputNote;
-    int semitonesUp;
+    char inputNote, sharpFlat, key;
 
-    printf("Welcome! Enter a note: ");
+    printf("Welcome! Enter a note (C, D, E, F, G, A, B): ");
     scanf(" %c", &inputNote);
-    printf("Number of semitones to transpose it up by: ");
-    scanf("%d", &semitonesUp);
+    printf("Does your note have a sharp/flat? Enter # for sharp, b for flat, and press enter if it has none of the mentioned: ");
+    scanf(" %c", &sharpFlat);
 
-    printf("Summary: You entered the note %c and wanted to transpose it up by %d semitones.", inputNote, semitonesUp);
+    printf("From C Major, which key would you like to convert this note to?");
+    printf("Enter E for E Major, C for C# Minor, A for Ab Major, and F for F Minor");
+    scanf(" %c", &key)
+
+    if (key == G) {
+        if (inputNote == "C" ||)
+    }
 }
