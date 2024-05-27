@@ -7,7 +7,14 @@ This project is kinda weird(?) in that we are only allowed to use concepts taugh
 Being restricted to printf, scanf, simple variables and arithmetic (no if-else, loops, or other 'complex' concepts), the simplest version of the code just takes in a singular music note, the number of semitones to shift it out, and simply just outputs a summary of the user's inputs.
 
 ### Version 2
-With If-Else statements being allowed, I upgraded my program to convert music notes from C Major to A Minor or G Major. What I wanted to achieve here was my program being able to convert from a Major to Major key, and a Major to Minor key.
+With If-Else statements being allowed, I upgraded my program to convert music notes from C Major to any of the following scales:
+- E Major
+- C# Minor
+- Ab Major
+- F Minor
+basically the majors and minors with the 4 sharps/flats
+
+What I wanted to achieve here was my program being able to convert from a Major to Major key, and a Major to Minor key.
 
 ### Version 3
 Now we get to play around with While Loops! The scaleup is simpler this time: I use the loop to allow a user to enter more than one note in order to get an entire string of converted notes.
