@@ -9,7 +9,7 @@ void main () {
     scanf(" %c", &sharpFlat);
 
     printf("\nFrom C Major, which key would you like to convert this note to?");
-    printf("\nEnter E for E Major, C for C# Minor, A for Ab Major, and F for F Minor");
+    printf("\nEnter E for E Major, C for C# Minor, A for Ab Major, and F for F Minor: ");
     scanf(" %c", &key);
 
     if (key == 'E') { //Everything is shifted up 4 semitones
@@ -46,8 +46,41 @@ void main () {
             printf("\nThe note %c%c either doesn't exist, or isn't within the keys that this program can convert currently.\n", inputNote, sharpFlat);
             printf("Perhaps you might want to run this program again?\n");
         }
+
     } else if (key == 'C') {
-        printf("NOT YET");
+        if ((inputNote == 'C' && (sharpFlat != '#' || sharpFlat != 'b')) || (inputNote == 'B' && sharpFlat == '#')) { //C, aka B#
+            finalNote = 'C';
+            finalSharpFlat = '#';
+        } else if ((inputNote == 'C' && sharpFlat == '#') || (inputNote == 'D' && sharpFlat == 'b')) { //C#, aka Db
+            finalNote = 'D';
+        } else if (inputNote == 'D' && (sharpFlat != '#' || sharpFlat != 'b')) { //D
+            finalNote = 'D';
+            finalSharpFlat = '#';
+        } else if ((inputNote == 'D' && sharpFlat == '#') || (inputNote == 'E' && sharpFlat == 'b')) { //D#, aka Eb
+            finalNote = 'E';
+        } else if ((inputNote == 'E' && (sharpFlat != '#' || sharpFlat != 'b')) || (inputNote == 'F' && sharpFlat == 'b')) { //E, aka Fb
+            finalNote = 'F';
+        } else if ((inputNote == 'F' && (sharpFlat != '#' || sharpFlat != 'b')) || (inputNote == 'E' && sharpFlat == '#')) { //F, aka E#
+            finalNote = 'F';
+            finalSharpFlat = '#';
+        } else if ((inputNote == 'F' && sharpFlat == '#') || (inputNote == 'G' && sharpFlat == 'b')) { //F#, aka Gb
+            finalNote = 'G';
+        } else if (inputNote == 'G' && (sharpFlat != '#' || sharpFlat != 'b')) { //G
+            finalNote = 'G';
+            finalSharpFlat = '#';
+        } else if ((inputNote == 'G' && sharpFlat == '#') || (inputNote == 'A' && sharpFlat == 'b')) { //G#, aka Ab
+            finalNote = 'A';
+        } else if (inputNote == 'A' && (sharpFlat != '#' || sharpFlat != 'b')) { //A
+            finalNote = 'A';
+            finalSharpFlat = '#';
+        } else if ((inputNote == 'A' && sharpFlat == '#') || (inputNote == 'B' && sharpFlat == 'b')) { //A#, aka Bb
+            finalNote = 'B';
+        } else if ((inputNote == 'B' && (sharpFlat != '#' || sharpFlat != 'b')) || (inputNote == 'C' && sharpFlat == 'b')) { //B, aka Cb
+            finalNote = 'C';
+        } else {
+            printf("\nThe note %c%c either doesn't exist, or isn't within the keys that this program can convert currently.\n", inputNote, sharpFlat);
+            printf("Perhaps you might want to run this program again?\n");
+        }
     } else if (key == 'A') {
         printf("NOT YET");
     } else if (key == 'F') {
