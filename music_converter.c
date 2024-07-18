@@ -6,36 +6,59 @@
 
 // Function Prototypes
 const char *shiftNote(const char *input, int shift);
+int shiftFinder(const char *startKey, const char *endKey);
 
 // Here, I define a 2D array of notes
 char NoteArray[ARRAY_SIZE][STRING_LENGTH] = {"C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B",};
 
 int main(){
     // Variables
-    char input[STRING_LENGTH];
+    char input[STRING_LENGTH], initialKey[STRING_LENGTH], finalKey[STRING_LENGTH];
     int shift;
 
     // Get input from the user
-    printf("Enter a string: ");
+    printf("Enter a note that you would like to transpose: ");
     scanf("%99s", input);
-    printf("How many to shift by? ");
-    scanf("%d", &shift);
-
-    printf("Shifted string is: %s\n", shiftNote(input, shift));
+    printf("Enter the key that the note is in: ");
+    scanf("%99s", initialKey);
+    printf("Enter key you would like to transpose to: ");
+    scanf("%99s", finalKey);
+    
+    printf("Shifted string is: %s and shift is %d\n", shiftNote(input, shiftFinder(initialKey, finalKey)), shiftFinder(initialKey, finalKey));
 }
 
 const char *shiftNote(const char *input, int shift) {
     // Search for the input note in the array, and then returns the value "shift" positions to the right of the input note.
     int i = 0;
-    while (i < ARRAY_SIZE)
-    {
+    while (i < ARRAY_SIZE) {
         i++;
-        if (strcmp(input, NoteArray[i]) == 0)
-        {
+        if (strcmp(input, NoteArray[i]) == 0) {
             return NoteArray[i + shift];
         }
     }
     return NULL;
+}
+
+int shiftFinder(const char *startKey, const char *endKey) {
+    int i = 0;
+    int startIndex, endIndex;
+    while (i < ARRAY_SIZE) { //Increment i to check against every note
+        i++;
+        if (strcmp(startKey, NoteArray[i]) == 0) {
+            startIndex = i;
+            printf("%d", startIndex);
+            break;
+        }
+    }
+    while (i < ARRAY_SIZE) { //Continue to increment the same value of i so the shift is always positive 
+        i++;
+        if (strcmp(endKey, NoteArray[i]) == 0) {
+            endIndex = i;
+            printf("%d", endIndex);
+            break;
+        }
+    }
+    return (endIndex - startIndex);
 }
 
 /*
