@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <string.h>
 
-#define ARRAY_SIZE 25
-#define STRING_LENGTH 100
+#define ARRAY_SIZE 100 // There's no limit to the array, so I just set it to 100.
+#define STRING_LENGTH 3 // Stores the maximum 2 characters of a note + the null terminator
 
 // Function Prototypes
 const char *shiftNote(const char *input, int shift);
@@ -13,16 +13,16 @@ char NoteArray[ARRAY_SIZE][STRING_LENGTH] = {"C", "C#", "D", "D#", "E", "F", "F#
 
 int main(){
     // Variables
-    char input[STRING_LENGTH], initialKey[STRING_LENGTH], finalKey[STRING_LENGTH];
+    char input[STRING_LENGTH], inputList[ARRAY_SIZE][STRING_LENGTH], outputList[ARRAY_SIZE][STRING_LENGTH], initialKey[STRING_LENGTH], finalKey[STRING_LENGTH];
     int shift;
 
     // Get input from the user
     printf("Enter a note that you would like to transpose: ");
-    scanf("%99s", input);
+    scanf("%2s", input);
     printf("Enter the key that the note is in: ");
-    scanf("%99s", initialKey);
+    scanf("%2s", initialKey);
     printf("Enter key you would like to transpose to: ");
-    scanf("%99s", finalKey);
+    scanf("%2s", finalKey);
     
     printf("Shifted string is: %s and shift is %d\n", shiftNote(input, shiftFinder(initialKey, finalKey)), shiftFinder(initialKey, finalKey));
 }
