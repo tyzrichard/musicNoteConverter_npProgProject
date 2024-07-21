@@ -60,14 +60,13 @@ int main()
     }
 
     i = 0; // reset i to 0
-    printf("\nThe shifted notes are:\n");
+    printf("\nshift %d The shifted notes are:\n", shift);
     while (i < count)
     {
         printf("%s ", outputList[i]);
         i++;
     }
 
-    return 0;
 }
 
 int searchNote(const char *input)
@@ -91,8 +90,7 @@ const char *shiftNote(const char *input, int shift)
     {
         if (strcmp(input, NoteArray[i]) == 0)
         {
-            int index = (i + shift + ARRAY_SIZE) % ARRAY_SIZE; // Handle wrapping around
-            return NoteArray[index];
+            return NoteArray[i + shift];
         }
         i++;
     }
@@ -114,7 +112,6 @@ int shiftFinder(const char *startKey, const char *endKey)
         i++;
     }
 
-    i = 0; // Reset i for the second search
     while (i < ARRAY_SIZE)
     {
         if (strcmp(endKey, NoteArray[i]) == 0)
@@ -131,5 +128,5 @@ int shiftFinder(const char *startKey, const char *endKey)
         return 0; // Handle error case
     }
 
-    return (endIndex - startIndex + ARRAY_SIZE) % ARRAY_SIZE; // Ensure positive shift
+    return (endIndex - startIndex);
 }
