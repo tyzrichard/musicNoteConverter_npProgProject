@@ -6,11 +6,14 @@
 
 // Function Prototypes
 int searchNote(const char *input);
+int searchKey(const char *key, int major);
 const char *shiftNote(const char *input, int shift);
 int shiftFinder(const char *startKey, const char *endKey);
 
 // Define a 2D array of notes
 char NoteArray[ARRAY_SIZE][STRING_LENGTH] = {"C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"};
+char MajorKeyArray[ARRAY_SIZE][STRING_LENGTH] = {"C", "G", "D", "A", "E", "B", "F#", "Gb", "C#", "Db", "Ab", "Eb", "Bb", "F"};
+char MinorKeyArray[ARRAY_SIZE][STRING_LENGTH] = {"A", "E", "B", "F#", "Gb", "C#", "Db", "G#", "D#", "Eb", "A#", "Bb", "F", "C", "G", "D"};
 
 int main()
 {
@@ -44,10 +47,27 @@ int main()
         }
     }
 
-    printf("Enter the key that the note is in: ");
-    scanf("%2s", initialKey);
-    printf("Enter key you would like to transpose to: ");
-    scanf("%2s", finalKey);
+    while (1)
+    {
+        printf("Enter the key that the note is in: ");
+        scanf("%2s", initialKey);
+        if (searchKey(initialKey, 1)) // 1 to search through MajorKeyArray
+        {
+            break;
+        }
+        printf("Invalid input! Please enter a valid key.\n");
+    }
+
+    while (1)
+    {
+        printf("Enter key you would like to transpose to: ");
+        scanf("%2s", finalKey);
+        if (searchKey(initialKey, 1)) // 1 to search through MajorKeyArray
+        {
+            break;
+        }
+        printf("Invalid input! Please enter a valid key.\n");
+    }
 
     // Process notes
     printf("You entered:\n");
@@ -66,7 +86,6 @@ int main()
         printf("%s ", outputList[i]);
         i++;
     }
-
 }
 
 int searchNote(const char *input)
@@ -75,6 +94,32 @@ int searchNote(const char *input)
     while (i < ARRAY_SIZE) // Sieves through NoteArray to find the input note
     {
         if (strcmp(input, NoteArray[i]) == 0)
+        {
+            return 1;
+        }
+        i++;
+    }
+    return 0; // Handle error case
+}
+
+int searchKey(const char *key, int major)
+{
+    int i = 0;
+    if (major)
+    {
+        while (i < ARRAY_SIZE) // Sieves through MajorKeyArray to find the input note
+        {
+            if (strcmp(key, MajorKeyArray[i]) == 0)
+            {
+                return 1;
+            }
+            i++;
+        }
+        return 0; // Handle error case
+    }
+    while (i < ARRAY_SIZE) // Sieves through MinorKeyArray to find the input note
+    {
+        if (strcmp(key, MinorKeyArray[i]) == 0)
         {
             return 1;
         }
