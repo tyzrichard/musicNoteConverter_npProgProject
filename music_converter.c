@@ -22,20 +22,24 @@ int main()
     // Get input from the user
     while (count < ARRAY_SIZE)
     {
-       printf("Enter a note that you would like to transpose, or press q to end: ");
+        printf("Enter a note that you would like to transpose, or press q to end: ");
         fgets(input, sizeof(input), stdin);
 
         // Remove the newline character from the input
         input[strcspn(input, "\n")] = '\0';
 
-        if (strcmp(input, "q") == 0) {
+        if (strcmp(input, "q") == 0)
+        {
             break; // Breaks out of user validation if the input is 'q'
         }
 
-        if (searchNote(input)) {
+        if (searchNote(input))
+        {
             strcpy(inputList[count], input); // Copy the input string to the array
             count++;
-        } else {
+        }
+        else
+        {
             printf("Invalid input! Please enter a valid note.\n");
         }
     }
