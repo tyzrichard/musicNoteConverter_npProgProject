@@ -17,76 +17,119 @@ char MinorKeyArray[ARRAY_SIZE][STRING_LENGTH] = {"A", "E", "B", "F#", "Gb", "C#"
 
 int main()
 {
-    // Variables
-    char input[STRING_LENGTH], inputList[ARRAY_SIZE][STRING_LENGTH], outputList[ARRAY_SIZE][STRING_LENGTH];
-    char initialKey[STRING_LENGTH], finalKey[STRING_LENGTH];
-    int shift, count = 0, i = 0;
-
-    // Get input from the user
-    while (count < ARRAY_SIZE)
+    int option;
+    while (1)
     {
-        printf("Enter a note that you would like to transpose, or press q to end: ");
-        fgets(input, sizeof(input), stdin);
+        printf("\n\nSelect an option to continue: \n1) Transpose Major Key to Major Key\n2) Transpose Minor Key to Minor Key\n3) Discover how Music Transposition works!\n4) Settings\nEnter anything else to quit.\n\nYour choice: ");
+        scanf("%d", &option);
+        getchar(); // Consume the newline character left in the buffer by scanf
 
-        // Remove the newline character from the input
-        input[strcspn(input, "\n")] = '\0';
-
-        if (strcmp(input, "q") == 0)
+        if (option == 1 || option == 2)
         {
-            break; // Breaks out of user validation if the input is 'q'
+            // Variables
+            char input[STRING_LENGTH], inputList[ARRAY_SIZE][STRING_LENGTH] = {0}, outputList[ARRAY_SIZE][STRING_LENGTH] = {0};
+            char initialKey[STRING_LENGTH] = {0}, finalKey[STRING_LENGTH] = {0};
+            int shift, count = 0, i = 0;
+            int major;
+            char majorStr[6];
+
+            if (option == 1)
+            { // Give basic information on the Major/Minor keys, based on what the user chose
+                printf("The 12 Major Keys are: C, C#/Db, D, Eb, E, F, F#/Gb, G, Ab, A, Bb and B.\n");
+                major = 1;
+                strcpy(majorStr, "Major");
+            }
+            else
+            {
+                printf("The 12 Minor Keys are: C, C#/Db, D, D#/Eb, E, F, F#/Gb, G, G#, A, A#/Bb and B.\n");
+                major = 0;
+                strcpy(majorStr, "Minor");
+            }
+
+            // Get input from the user: initialKey, finalKey and an array of notes
+            while (1)
+            {
+                printf("Enter the key that you would like to transpose from: ");
+                scanf("%s", initialKey);
+                getchar(); // Consume the newline character left in the buffer by scanf
+                if (searchKey(initialKey, major)) // to search through Major/Minor KeyArray
+                {
+                    break;
+                }
+                printf("Invalid input! Please enter a valid key %s.\n", initialKey);
+            }
+            while (1)
+            {
+                printf("Enter the key you would like to transpose to: ");
+                scanf("%s", finalKey);
+                getchar(); // Consume the newline character left in the buffer by scanf
+                if (searchKey(finalKey, major)) // to search through Major/Minor KeyArray
+                {
+                    break;
+                }
+                printf("Invalid input! Please enter a valid key.\n");
+            }
+
+            while (count < ARRAY_SIZE)
+            {
+                printf("Enter a note that you would like to transpose, or press q to end: ");
+                fgets(input, sizeof(input), stdin);
+
+                // Remove the newline character from the input
+                input[strcspn(input, "\n")] = '\0';
+
+                if (strcmp(input, "q") == 0)
+                {
+                    break; // Breaks out of user validation if the input is 'q'
+                }
+
+                if (searchNote(input))
+                {
+                    strcpy(inputList[count], input); // Copy the input string to the array
+                    count++;
+                }
+                else
+                {
+                    printf("Invalid input! Please enter a valid note.\n");
+                }
+            }
+
+            // Process notes
+            printf("You entered %d notes in %s %s:\n", count, initialKey, majorStr);
+            shift = shiftFinder(initialKey, finalKey);
+            while (i < count)
+            {
+                printf("%s ", inputList[i]);
+                strcpy(outputList[i], shiftNote(inputList[i], shift));
+                i++;
+            }
+
+            i = 0; // reset i to 0
+            printf("\nAfter being shifted to %s %s, the notes are:\n", finalKey, majorStr);
+            while (i < count)
+            {
+                printf("%s ", outputList[i]);
+                i++;
+            }
+            printf("\n");
         }
-
-        if (searchNote(input))
+        else if (option == 3)
         {
-            strcpy(inputList[count], input); // Copy the input string to the array
-            count++;
+            // How Music Transposition Works
+        }
+        else if (option == 4)
+        {
+            // Settings
         }
         else
         {
-            printf("Invalid input! Please enter a valid note.\n");
+            printf("Thanks for using my Music Transposer! See you next time :D\n");
+            break; // Quit the Program
         }
-    }
-
-    while (1)
-    {
-        printf("Enter the key that the note is in: ");
-        scanf("%2s", initialKey);
-        if (searchKey(initialKey, 1)) // 1 to search through MajorKeyArray
-        {
-            break;
-        }
-        printf("Invalid input! Please enter a valid key.\n");
-    }
-
-    while (1)
-    {
-        printf("Enter key you would like to transpose to: ");
-        scanf("%2s", finalKey);
-        if (searchKey(initialKey, 1)) // 1 to search through MajorKeyArray
-        {
-            break;
-        }
-        printf("Invalid input! Please enter a valid key.\n");
-    }
-
-    // Process notes
-    printf("You entered:\n");
-    while (i < count)
-    {
-        printf("%s ", inputList[i]);
-        shift = shiftFinder(initialKey, finalKey);
-        strcpy(outputList[i], shiftNote(inputList[i], shift));
-        i++;
-    }
-
-    i = 0; // reset i to 0
-    printf("\nshift %d The shifted notes are:\n", shift);
-    while (i < count)
-    {
-        printf("%s ", outputList[i]);
-        i++;
     }
 }
+
+// Function Definitions
 
 int searchNote(const char *input)
 {
@@ -169,7 +212,7 @@ int shiftFinder(const char *startKey, const char *endKey)
 
     if (startIndex == -1 || endIndex == -1)
     {
-        printf("Error: Start or end key not found.\n");
+        printf("Error: Start or end key not found.\n"); //NOTE TO SELF: ALLOW FLAT INPUTS, THATS WHATS TRIGGERING IT
         return 0; // Handle error case
     }
 
