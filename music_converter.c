@@ -9,7 +9,8 @@ int searchNote(const char *input);
 int searchScale(const char *scale, int major);
 const char *shiftNote(const char *input, int shift);
 int shiftFinder(const char *startScale, const char *endScale);
-void fullPiano(int defaultKeys);
+void fullPiano();
+void piano(char arr[ARRAY_SIZE][STRING_LENGTH]);
 
 // Define a 2D array of notes
 char NoteArray[ARRAY_SIZE][STRING_LENGTH] = {"C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"};
@@ -118,7 +119,7 @@ int main()
         {
             while (1)
             {
-                printf("1) The different keys of a piano\n2) The 24 Music Scales\n3) Music Transposition\nOr enter anything else to go back.\nYour choice: ");
+                printf("\n1) The different keys of a piano\n2) The 24 Music Scales\n3) Music Transposition\nOr enter anything else to go back.\nYour choice: ");
                 scanf("%d", &option);
                 getchar(); // Consume the newline character left in the buffer by scanf
                 if (option == 1)
@@ -129,15 +130,45 @@ int main()
                 }
                 else if (option == 2)
                 {
-                    printf("Select any one of the 24 scales:");
+                    char scale[STRING_LENGTH];
+                    printf("There are a total of 24 Scales. Which would you like to learn more about?\n");
                     printf(" ___________________________________________________________________________________________________________\n");
                     printf("|           |       |       |       |       |       |       |       |       |       |       |       |       |\n");
                     printf("|   Major   |   A   |  Bb   |   B   |   C   |  Db   |   D   |  Eb   |   E   |   F   |  F#   |   G   |  Ab   |\n");
                     printf("|-----------|-------|-------|-------|-------|-------|-------|-------|-------|-------|-------|-------|-------|\n");
                     printf("|   Minor   |   Am  |  Bbm  |   Bm  |   Cm  |  C#m  |   Dm  |  D#m  |   Em  |   Fm  |  F#m  |   Gm  |  G#m  |\n");
                     printf("|___________|_______|_______|_______|_______|_______|_______|_______|_______|_______|_______|_______|_______|\n");
-                    while (1) { // Input Validation
+                    while (1)
+                    { // Input Validation
+                        printf("Choose a scale: ");
+                        fgets(scale, sizeof(scale), stdin);
+                        size_t len = strlen(scale); // size_t only represents non-negative values and is commonly used for array lengths.
 
+                        if (len > 0 && scale[len - 1] == '\n')
+                        { // Removes newline character if somehow it pops up
+                            scale[len - 1] = '\0';
+                            len--;
+                        }
+
+                        // Check if the last character is 'm'
+                        if (len > 0 && scale[len - 1] == 'm')
+                        {
+                            scale[len - 1] = '\0'; // Removes the 'm' and then searches it within the MinorScaleArray
+                            len--;
+                            if (searchScale(scale, 0))
+                            {
+                                break;
+                            }
+                        }
+                        else
+                        {
+                            if (searchScale(scale, 1))
+                            { // Searches it within the MajorScaleArray
+                                char stringArray[ARRAY_SIZE][STRING_LENGTH] = {"C ", "  ", "D ", "  ", "E ", "F ", "  ", "G ", "  ", "A ", "  ", "B "};
+                                piano(stringArray);
+                                break;
+                            }
+                        }
                     }
                 }
                 else if (option == 3)
@@ -251,18 +282,26 @@ int shiftFinder(const char *startScale, const char *endScale)
     return (endIndex - startIndex);
 }
 
-void fullPiano(int defaultKeys)
+void fullPiano()
 {
     printf(" ____________________________________________________________\n");
     printf("|     |    |   |    |     |     |    |   |    |   |    |     |\n");
-    if (defaultKeys)
-    {
-        printf("|     | C# |   | D# |     |     | F# |   | G# |   | A# |     |\n");
-    } else {
-        printf("|     |    |   |    |     |     |    |   |    |   |    |     |\n");
-    }
+    printf("|     | C# |   | D# |     |     | F# |   | G# |   | A# |     |\n");
+    printf("|     | Db |   | Eb |     |     | Gb |   | Ab |   | Bb |     |\n");
     printf("|     |____|   |____|     |     |____|   |____|   |____|     |\n");
     printf("|        |        |       |        |        |        |       |\n");
     printf("|   C    |   D    |   E   |   F    |   G    |   A    |   B   |\n");
+    printf("|________|________|_______|________|________|________|_______|\n\n");
+}
+
+void piano(char arr[ARRAY_SIZE][STRING_LENGTH])
+{
+    printf(" ____________________________________________________________\n");
+    printf("|     |    |   |    |     |     |    |   |    |   |    |     |\n");
+    printf("|     |    |   |    |     |     |    |   |    |   |    |     |\n");
+    printf("|     | %s |   | %s |     |     | %s |   | %s |   | %s |     |\n", arr[1], arr[3], arr[6], arr[8], arr[10]);
+    printf("|     |____|   |____|     |     |____|   |____|   |____|     |\n");
+    printf("|        |        |       |        |        |        |       |\n");
+    printf("|   %s   |   %s   |   %s  |   %s   |   %s   |   %s   |   %s  |\n", arr[0], arr[2], arr[4], arr[5], arr[7], arr[9], arr[11]);
     printf("|________|________|_______|________|________|________|_______|\n\n");
 }
