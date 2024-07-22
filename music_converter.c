@@ -19,14 +19,14 @@ char MinorScaleArray[ARRAY_SIZE][STRING_LENGTH] = {"C", "C#", "D", "D#", "E", "F
 
 int main()
 {
-    int option;
+    char option[STRING_LENGTH];
     while (1)
     {
         printf("\n\n1) Transpose between Major Scales\n2) Transpose between Minor Scales\n3) Discover how Music Theory works!\n4) Settings\nEnter anything else to quit.\n\nSelect an option to continue: ");
-        scanf("%d", &option);
-        getchar(); // Consume the newline character left in the buffer by scanf
+        fgets(option, sizeof(option), stdin);
+        option[strcspn(option, "\n")] = 0;
 
-        if (option == 1 || option == 2) // Transposition
+        if (strcmp(option, "1") == 0 || strcmp(option, "2") == 0) // Transposition
         {
             // Variables
             char input[STRING_LENGTH], inputList[ARRAY_SIZE][STRING_LENGTH] = {0}, outputList[ARRAY_SIZE][STRING_LENGTH] = {0};
@@ -35,7 +35,7 @@ int main()
             int major;
             char majorStr[6];
 
-            if (option == 1)
+            if (strcmp(option, "1") == 0)
             { // Give basic information on the Major/Minor scaless, based on what the user chose
                 printf("The 12 Major Scales are: C, Db, D, Eb, E, F, F#, G, Ab, A, Bb and B.\n");
                 major = 1;
@@ -115,20 +115,21 @@ int main()
             }
             printf("\n");
         }
-        else if (option == 3) // How Music Transposition Works
+        else if (strcmp(option, "3") == 0) // How Music Transposition Works
         {
             while (1)
             {
+                char infoOption[STRING_LENGTH];
                 printf("\n1) The different keys of a piano\n2) The 24 Music Scales\n3) Music Transposition\nOr enter anything else to go back.\nYour choice: ");
-                scanf("%d", &option);
-                getchar(); // Consume the newline character left in the buffer by scanf
-                if (option == 1)
+                fgets(infoOption, sizeof(infoOption), stdin);
+                infoOption[strcspn(infoOption, "\n")] = 0;
+                if (strcmp(infoOption, "1") == 0)
                 {
                     printf("A piano typically has 12 keys as follows:\n");
                     fullPiano(1);
                     printf("From here, it repeats the same 12 keys, with each set being in a different pitch!\nA sharp (#) refers to a key that is one semitone higher (one step to the right) of the key before it, so C# refers to the black key directly to the right of C.\nOn the other hand, a flat (b) refers to a key that is one semitone lower, like how Db can be used to refer to the same black key.\n\nIn some rare occasions, 𝄪 means double-sharp, and bb means double-flat.");
                 }
-                else if (option == 2)
+                else if (strcmp(infoOption, "2") == 0)
                 {
                     char scale[STRING_LENGTH];
                     printf("There are a total of 24 Scales. Which would you like to learn more about?\n");
@@ -142,6 +143,7 @@ int main()
                     { // Input Validation
                         printf("Choose a scale: ");
                         fgets(scale, sizeof(scale), stdin);
+                        scale[strcspn(scale, "\n")] = 0;
                         size_t len = strlen(scale); // size_t only represents non-negative values and is commonly used for array lengths.
 
                         if (len > 0 && scale[len - 1] == '\n')
@@ -218,7 +220,7 @@ int main()
                                     piano(stringArray);
                                 }
                                 break;
-                            } 
+                            }
                             printf("Invalid input!\n");
                         }
                         else
@@ -291,7 +293,7 @@ int main()
                         }
                     }
                 }
-                else if (option == 3)
+                else if (strcmp(infoOption, "3") == 0)
                 {
                 }
                 else
@@ -300,7 +302,7 @@ int main()
                 }
             }
         }
-        else if (option == 4)
+        else if (strcmp(option, "4") == 0)
         {
             // Settings
         }
