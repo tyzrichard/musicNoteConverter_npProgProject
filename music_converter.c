@@ -126,7 +126,7 @@ int main()
                 {
                     printf("A piano typically has 12 keys as follows:\n");
                     fullPiano(1);
-                    printf("From here, it repeats the same 12 keys, with each set being in a different pitch!\nA sharp (#) refers to a key that is one semitone higher (one step to the right) of the key before it, so C# refers to the black key directly to the right of C.\nOn the other hand, a flat (b) refers to a key that is one semitone lower, like how Db can be used to refer to the same black key.\n\n");
+                    printf("From here, it repeats the same 12 keys, with each set being in a different pitch!\nA sharp (#) refers to a key that is one semitone higher (one step to the right) of the key before it, so C# refers to the black key directly to the right of C.\nOn the other hand, a flat (b) refers to a key that is one semitone lower, like how Db can be used to refer to the same black key.\n\nIn some rare occasions, 𝄪 means double-sharp, and bb means double-flat.");
                 }
                 else if (option == 2)
                 {
@@ -137,7 +137,7 @@ int main()
                     printf("|   Major   |   A   |  Bb   |   B   |   C   |  Db   |   D   |  Eb   |   E   |   F   |  F#   |   G   |  Ab   |\n");
                     printf("|-----------|-------|-------|-------|-------|-------|-------|-------|-------|-------|-------|-------|-------|\n");
                     printf("|   Minor   |   Am  |  Bbm  |   Bm  |   Cm  |  C#m  |   Dm  |  D#m  |   Em  |   Fm  |  F#m  |   Gm  |  G#m  |\n");
-                    printf("|___________|_______|_______|_______|_______|_______|_______|_______|_______|_______|_______|_______|_______|\n");
+                    printf("|___________|_______|_______|_______|_______|_______|_______|_______|_______|_______|_______|_______|_______|\n\n");
                     while (1)
                     { // Input Validation
                         printf("Choose a scale: ");
@@ -157,17 +157,137 @@ int main()
                             len--;
                             if (searchScale(scale, 0))
                             {
+                                if (strcmp(scale, "A") == 0)
+                                {
+                                    char stringArray[ARRAY_SIZE][STRING_LENGTH] = {"C ", "  ", "D ", "  ", "E ", "F ", "  ", "  ", "G#", "A ", "  ", "B "};
+                                    piano(stringArray);
+                                }
+                                else if (strcmp(scale, "Bb") == 0)
+                                {
+                                    char stringArray[ARRAY_SIZE][STRING_LENGTH] = {"C ", "Db", "  ", "Eb", "  ", "F ", "Gb", "  ", "  ", "A ", "Bb", "  "};
+                                    piano(stringArray);
+                                }
+                                else if (strcmp(scale, "B") == 0)
+                                {
+                                    char stringArray[ARRAY_SIZE][STRING_LENGTH] = {"  ", "C#", "D ", "  ", "E ", "  ", "F#", "G ", "  ", "  ", "A#", "B "};
+                                    piano(stringArray);
+                                }
+                                else if (strcmp(scale, "C") == 0)
+                                {
+                                    char stringArray[ARRAY_SIZE][STRING_LENGTH] = {"C ", "  ", "D ", "Eb", "  ", "F ", "  ", "G ", "Ab", "  ", "  ", "B "};
+                                    piano(stringArray);
+                                }
+                                else if (strcmp(scale, "C#") == 0)
+                                {
+                                    char stringArray[ARRAY_SIZE][STRING_LENGTH] = {"B#", "C#", "  ", "D#", "E ", "  ", "F#", "  ", "G#", "A ", "  ", "  "};
+                                    piano(stringArray);
+                                }
+                                else if (strcmp(scale, "D") == 0)
+                                {
+                                    char stringArray[ARRAY_SIZE][STRING_LENGTH] = {"  ", "C#", "D ", "  ", "E ", "F ", "  ", "G ", "  ", "A ", "Bb", "  "};
+                                    piano(stringArray);
+                                }
+                                else if (strcmp(scale, "D#") == 0)
+                                {
+                                    char stringArray[ARRAY_SIZE][STRING_LENGTH] = {"  ", "  ", "C𝄪", "D#", "  ", "E#", "F#", "  ", "G#", "  ", "A#", "B "};
+                                    piano(stringArray);
+                                }
+                                else if (strcmp(scale, "E") == 0)
+                                {
+                                    char stringArray[ARRAY_SIZE][STRING_LENGTH] = {"C ", "  ", "  ", "D#", "E ", "  ", "F#", "G ", "  ", "A ", "  ", "B "};
+                                    piano(stringArray);
+                                }
+                                else if (strcmp(scale, "F") == 0)
+                                {
+                                    char stringArray[ARRAY_SIZE][STRING_LENGTH] = {"C ", "Db", "  ", "  ", "E ", "F ", "  ", "G ", "Ab", "  ", "Bb", "  "};
+                                    piano(stringArray);
+                                }
+                                else if (strcmp(scale, "F#") == 0)
+                                {
+                                    char stringArray[ARRAY_SIZE][STRING_LENGTH] = {"  ", "C#", "D ", "  ", "  ", "E#", "F#", "  ", "G#", "  ", "A ", "B "};
+                                    piano(stringArray);
+                                }
+                                else if (strcmp(scale, "G") == 0)
+                                {
+                                    char stringArray[ARRAY_SIZE][STRING_LENGTH] = {"C ", "  ", "D ", "Eb", "  ", "F ", "  ", "G ", "  ", "A ", "Bb", "  "};
+                                    piano(stringArray);
+                                }
+                                else if (strcmp(scale, "G#") == 0)
+                                {
+                                    char stringArray[ARRAY_SIZE][STRING_LENGTH] = {"  ", "C#", "  ", "D#", "E ", "  ", "  ", "F𝄪", "G#", "  ", "A#", "B "};
+                                    piano(stringArray);
+                                }
                                 break;
-                            }
+                            } 
+                            printf("Invalid input!\n");
                         }
                         else
                         {
-                            if (searchScale(scale, 1))
-                            { // Searches it within the MajorScaleArray
-                                char stringArray[ARRAY_SIZE][STRING_LENGTH] = {"C ", "  ", "D ", "  ", "E ", "F ", "  ", "G ", "  ", "A ", "  ", "B "};
-                                piano(stringArray);
+                            if (searchScale(scale, 1)) // Searches whether it exists within the MajorScaleArray
+                            {
+                                if (strcmp(scale, "A") == 0)
+                                {
+                                    char stringArray[ARRAY_SIZE][STRING_LENGTH] = {"  ", "C#", "D ", "  ", "E ", "  ", "F#", "  ", "G#", "A ", "  ", "B "};
+                                    piano(stringArray);
+                                }
+                                else if (strcmp(scale, "Bb") == 0)
+                                {
+                                    char stringArray[ARRAY_SIZE][STRING_LENGTH] = {"C ", "  ", "D ", "Eb", "  ", "F ", "  ", "G ", "  ", "A ", "Bb", "  "};
+                                    piano(stringArray);
+                                }
+                                else if (strcmp(scale, "B") == 0)
+                                {
+                                    char stringArray[ARRAY_SIZE][STRING_LENGTH] = {"  ", "C#", "  ", "D#", "E ", "  ", "F#", "  ", "G#", "  ", "A#", "B "};
+                                    piano(stringArray);
+                                }
+                                else if (strcmp(scale, "C") == 0)
+                                {
+                                    char stringArray[ARRAY_SIZE][STRING_LENGTH] = {"C ", "  ", "D ", "  ", "E ", "F ", "  ", "G ", "  ", "A ", "  ", "B "};
+                                    piano(stringArray);
+                                }
+                                else if (strcmp(scale, "Db") == 0)
+                                {
+                                    char stringArray[ARRAY_SIZE][STRING_LENGTH] = {"C ", "Db", "  ", "Eb", "  ", "F ", "Gb", "  ", "Ab", "  ", "Bb", "  "};
+                                    piano(stringArray);
+                                }
+                                else if (strcmp(scale, "D") == 0)
+                                {
+                                    char stringArray[ARRAY_SIZE][STRING_LENGTH] = {"  ", "C#", "D ", "  ", "E ", "  ", "F#", "G ", "  ", "A ", "  ", "B "};
+                                    piano(stringArray);
+                                }
+                                else if (strcmp(scale, "Eb") == 0)
+                                {
+                                    char stringArray[ARRAY_SIZE][STRING_LENGTH] = {"C ", "  ", "D ", "Eb", "  ", "F ", "  ", "G ", "Ab", "  ", "Bb", "  "};
+                                    piano(stringArray);
+                                }
+                                else if (strcmp(scale, "E") == 0)
+                                {
+                                    char stringArray[ARRAY_SIZE][STRING_LENGTH] = {"  ", "C#", "  ", "D#", "E ", "  ", "F#", "  ", "G#", "A ", "  ", "B "};
+                                    piano(stringArray);
+                                }
+                                else if (strcmp(scale, "F") == 0)
+                                {
+                                    char stringArray[ARRAY_SIZE][STRING_LENGTH] = {"C ", "  ", "D ", "  ", "E ", "F ", "  ", "G ", "  ", "A ", "Bb", "  "};
+                                    piano(stringArray);
+                                }
+                                else if (strcmp(scale, "F#") == 0)
+                                {
+                                    char stringArray[ARRAY_SIZE][STRING_LENGTH] = {"  ", "C#", "  ", "D#", "  ", "E#", "F#", "  ", "G#", "  ", "A#", "B "};
+                                    piano(stringArray);
+                                }
+                                else if (strcmp(scale, "G") == 0)
+                                {
+                                    char stringArray[ARRAY_SIZE][STRING_LENGTH] = {"C ", "  ", "D ", "  ", "E ", "  ", "F#", "G ", "  ", "A ", "  ", "B "};
+                                    piano(stringArray);
+                                }
+                                else if (strcmp(scale, "Ab") == 0)
+                                {
+                                    char stringArray[ARRAY_SIZE][STRING_LENGTH] = {"C ", "Db", "  ", "Eb", "  ", "F ", "  ", "G ", "Ab", "  ", "Bb", "  "};
+                                    piano(stringArray);
+                                }
                                 break;
                             }
+                            printf("Invalid input!\n");
                         }
                     }
                 }
