@@ -26,7 +26,7 @@ int main()
     printf("\nWelcome to my Music Transposer!");
     char option[STRING_LENGTH];
     char cont[STRING_LENGTH];
-    int extraInfo = 0;
+    int extraInfo = 0, autoreturn = 0;
     while (1)
     {
         header("Main Menu");
@@ -147,13 +147,18 @@ int main()
                     i++;
                 }
 
-                printf("\nPress C to convert another scale, and anything else to go back: ");
-                fgets(cont, sizeof(cont), stdin);
-                cont[strcspn(cont, "\n")] = 0;
-                if (strcmp(cont, "C") != 0)
+                if (!autoreturn)
                 {
-                    break;
+                    printf("\nPress C to convert another scale, and anything else to go back: ");
+                    fgets(cont, sizeof(cont), stdin);
+                    cont[strcspn(cont, "\n")] = 0;
+                    if (strcmp(cont, "C") != 0)
+                    {
+                        break;
+                    }
                 }
+                else
+                    break;
             }
         }
         else if (strcmp(option, "3") == 0) // How Music Theory Works
@@ -173,8 +178,11 @@ int main()
                     piano(stringArray, 1);
                     printf("From here, it repeats the same 12 keys, with each set being in a different pitch!\nA sharp (#) refers to a key that is one semitone higher (one step to the right) of the key before it, so C# refers to the black key directly to the right of C.\nOn the other hand, a flat (b) refers to a key that is one semitone lower, like how Db can be used to refer to the same black key.\n\nIn some rare occasions, x means double-sharp, and bb means double-flat.");
 
-                    printf("\nPress any key to continue: ");
-                    fgets(cont, sizeof(cont), stdin);
+                    if (!autoreturn)
+                    {
+                        printf("\nPress any key to continue: ");
+                        fgets(cont, sizeof(cont), stdin);
+                    }
                 }
                 else if (strcmp(infoOption, "2") == 0)
                 {
@@ -342,13 +350,18 @@ int main()
                                 printf("Invalid input!\n");
                             }
                         }
-                        printf("\nPress C take a look at another scale, and anything else to go back: ");
-                        fgets(cont, sizeof(cont), stdin);
-                        cont[strcspn(cont, "\n")] = 0;
-                        if (strcmp(cont, "C") != 0)
+                        if (!autoreturn)
                         {
-                            break;
+                            printf("\nPress C take a look at another scale, and anything else to go back: ");
+                            fgets(cont, sizeof(cont), stdin);
+                            cont[strcspn(cont, "\n")] = 0;
+                            if (strcmp(cont, "C") != 0)
+                            {
+                                break;
+                            }
                         }
+                        else
+                            break;
                     }
                 }
                 else if (strcmp(infoOption, "3") == 0)
@@ -363,8 +376,51 @@ int main()
         }
         else if (strcmp(option, "4") == 0)
         {
-            header("Settings");
-            
+            while (1)
+            {
+                header("Settings");
+                if (extraInfo)
+                {
+                    printf("1) Extra Info during Transposition            ENABLED\n");
+                }
+                else
+                    printf("1) Extra Info during Transposition            DISABLED\n");
+                if (autoreturn)
+                {
+                    printf("2) Auto-return to Menu                        ENABLED\n");
+                }
+                else
+                    printf("2) Auto-return to Menu                        DISABLED\n");
+                printf("\nSelect an option, or press any other key to exit: ");
+                fgets(option, sizeof(option), stdin);
+                option[strcspn(option, "\n")] = 0;
+                if (strcmp(option, "1") == 0)
+                {
+                    if (extraInfo == 1)
+                    {
+                        extraInfo = 0;
+                    }
+                    else
+                    {
+                        extraInfo = 1;
+                    }
+                }
+                else if (strcmp(option, "2") == 0)
+                {
+                    if (autoreturn == 1)
+                    {
+                        autoreturn = 0;
+                    }
+                    else
+                    {
+                        autoreturn = 1;
+                    }
+                }
+                else
+                {
+                    break;
+                }
+            }
         }
         else
         {
