@@ -6,6 +6,7 @@
 #define STRING_LENGTH 10
 
 // Function Prototypes
+void header(const char *input);                                                                                       // A header to make my sections look nice
 const char *flatConvert(const char *input);                                                                           // Converts notes with flats to their sharp equivalents for processing
 int searchNote(const char *input);                                                                                    // Searches for a note, usually to see if its a valid input
 int searchScale(const char *scale, int major);                                                                        // Similar to searchNote, but for scales
@@ -21,282 +22,314 @@ char MinorScaleArray[ARRAY_SIZE][STRING_LENGTH] = {"C", "C#", "D", "D#", "E", "F
 
 int main()
 {
+    printf("\nWelcome to my Music Transposer!");
     char option[STRING_LENGTH];
+    char cont[STRING_LENGTH];
     while (1)
     {
-        printf("\n\n1) Transpose between Major Scales\n2) Transpose between Minor Scales\n3) Discover how Music Theory works!\n4) Settings\nEnter anything else to quit.\n\nSelect an option to continue: ");
+        header("Main Menu");
+        printf("1) Transpose between Major Scales\n2) Transpose between Minor Scales\n3) Discover how Music Theory works!\n4) Settings\nEnter anything else to quit.\n\nSelect an option to continue: ");
         fgets(option, sizeof(option), stdin);
         option[strcspn(option, "\n")] = 0;
 
         if (strcmp(option, "1") == 0 || strcmp(option, "2") == 0) // Transposition
         {
-            // Variables
-            char input[STRING_LENGTH], inputList[ARRAY_SIZE][STRING_LENGTH] = {0}, outputList[ARRAY_SIZE][STRING_LENGTH] = {0};
-            char initialScale[STRING_LENGTH] = {0}, finalScale[STRING_LENGTH] = {0};
-            int shift, count = 0, i = 0;
-            int major;
-            char majorStr[6];
-
-            if (strcmp(option, "1") == 0)
-            { // Give basic information on the Major/Minor scaless, based on what the user chose
-                printf("The 12 Major Scales are: C, Db, D, Eb, E, F, F#, G, Ab, A, Bb and B.\n");
-                major = 1;
-                strcpy(majorStr, "Major");
-            }
-            else
+            while (1)
             {
-                printf("The 12 Minor Scales are: C, C#, D, D#, E, F, F#, G, G#, A, Bb and B.\n");
-                major = 0;
-                strcpy(majorStr, "Minor");
-            }
+                // Variables
+                char input[STRING_LENGTH], inputList[ARRAY_SIZE][STRING_LENGTH] = {0}, outputList[ARRAY_SIZE][STRING_LENGTH] = {0};
+                char initialScale[STRING_LENGTH] = {0}, finalScale[STRING_LENGTH] = {0};
+                int shift, count = 0, i = 0;
+                int major;
+                char majorStr[6];
 
-            // Get input from the user: initialScale, finalScale and an array of notes
-            while (1) // Input Validation
-            {
-                printf("Enter the scale that you would like to transpose from: ");
-                scanf("%s", initialScale);
-                getchar();                            // Consume the newline character left in the buffer by scanf
-                if (searchScale(initialScale, major)) // to search through Major/Minor ScaleArray
-                {
-                    break;
-                }
-                printf("Invalid input! Please enter a valid scale.\n");
-            }
-            while (1) // Input Validation
-            {
-                printf("Enter the scale you would like to transpose to: ");
-                scanf("%s", finalScale);
-                getchar();                          // Consume the newline character left in the buffer by scanf
-                if (searchScale(finalScale, major)) // to search through Major/Minor ScaleArray
-                {
-                    break;
-                }
-                printf("Invalid input! Please enter a valid scale.\n");
-            }
-
-            while (count < ARRAY_SIZE)
-            {
-                printf("Enter a note that you would like to transpose, or press q to end: ");
-                fgets(input, sizeof(input), stdin);
-
-                // Remove the newline character from the input
-                input[strcspn(input, "\n")] = '\0';
-
-                if (strcmp(input, "q") == 0)
-                {
-                    break; // Breaks out of user validation if the input is 'q'
-                }
-
-                if (searchNote(input))
-                {
-                    strcpy(inputList[count], input); // Copy the input string to the array
-                    count++;
+                if (strcmp(option, "1") == 0)
+                { // Give basic information on the Major/Minor scaless, based on what the user chose
+                    header("Major Scale Transposition");
+                    printf("The 12 Major Scales are: C, Db, D, Eb, E, F, F#, G, Ab, A, Bb and B.\n");
+                    major = 1;
+                    strcpy(majorStr, "Major");
                 }
                 else
                 {
-                    printf("Invalid input! Please enter a valid note.\n");
+                    header("Minor Scale Transposition");
+                    printf("The 12 Minor Scales are: C, C#, D, D#, E, F, F#, G, G#, A, Bb and B.\n");
+                    major = 0;
+                    strcpy(majorStr, "Minor");
+                }
+
+                // Get input from the user: initialScale, finalScale and an array of notes
+                while (1) // Input Validation
+                {
+                    printf("Enter the scale that you would like to transpose from: ");
+                    scanf("%s", initialScale);
+                    getchar();                            // Consume the newline character left in the buffer by scanf
+                    if (searchScale(initialScale, major)) // to search through Major/Minor ScaleArray
+                    {
+                        break;
+                    }
+                    printf("Invalid input! Please enter a valid scale.\n");
+                }
+                while (1) // Input Validation
+                {
+                    printf("Enter the scale you would like to transpose to: ");
+                    scanf("%s", finalScale);
+                    getchar();                          // Consume the newline character left in the buffer by scanf
+                    if (searchScale(finalScale, major)) // to search through Major/Minor ScaleArray
+                    {
+                        break;
+                    }
+                    printf("Invalid input! Please enter a valid scale.\n");
+                }
+
+                while (count < ARRAY_SIZE)
+                {
+                    printf("Enter a note that you would like to transpose, or press q to end: ");
+                    fgets(input, sizeof(input), stdin);
+
+                    // Remove the newline character from the input
+                    input[strcspn(input, "\n")] = '\0';
+
+                    if (strcmp(input, "q") == 0)
+                    {
+                        break; // Breaks out of user validation if the input is 'q'
+                    }
+
+                    if (searchNote(input))
+                    {
+                        strcpy(inputList[count], input); // Copy the input string to the array
+                        count++;
+                    }
+                    else
+                    {
+                        printf("Invalid input! Please enter a valid note.\n");
+                    }
+                }
+
+                // Process notes
+                printf("\nYou entered %d notes in %s %s:\n", count, initialScale, majorStr);
+                shift = shiftFinder(initialScale, finalScale);
+                while (i < count)
+                {
+                    printf("%s ", inputList[i]);
+                    strcpy(outputList[i], shiftNote(inputList[i], shift));
+                    i++;
+                }
+
+                i = 0; // reset i to 0
+                printf("\nAfter being shifted to %s %s, the notes are:\n", finalScale, majorStr);
+                while (i < count)
+                {
+                    printf("%s ", outputList[i]);
+                    i++;
+                }
+
+                printf("\nPress C to convert another scale, and anything else to go back: ");
+                fgets(cont, sizeof(cont), stdin);
+                cont[strcspn(cont, "\n")] = 0;
+                if (strcmp(cont, "C") != 0)
+                {
+                    break;
                 }
             }
-
-            // Process notes
-            printf("You entered %d notes in %s %s:\n", count, initialScale, majorStr);
-            shift = shiftFinder(initialScale, finalScale);
-            while (i < count)
-            {
-                printf("%s ", inputList[i]);
-                strcpy(outputList[i], shiftNote(inputList[i], shift));
-                i++;
-            }
-
-            i = 0; // reset i to 0
-            printf("\nAfter being shifted to %s %s, the notes are:\n", finalScale, majorStr);
-            while (i < count)
-            {
-                printf("%s ", outputList[i]);
-                i++;
-            }
-            printf("\n");
         }
-        else if (strcmp(option, "3") == 0) // How Music Transposition Works
+        else if (strcmp(option, "3") == 0) // How Music Theory Works
         {
             while (1)
             {
                 char infoOption[STRING_LENGTH];
-                printf("\n1) The different keys of a piano\n2) The 24 Music Scales\n3) Music Transposition\nOr enter anything else to go back.\nYour choice: ");
+                header("How Music Theory Works");
+                printf("1) The different keys of a piano\n2) The 24 Music Scales\n3) Music Transposition\nOr enter anything else to go back.\nYour choice: ");
                 fgets(infoOption, sizeof(infoOption), stdin);
                 infoOption[strcspn(infoOption, "\n")] = 0;
                 if (strcmp(infoOption, "1") == 0)
                 {
+                    header("The Keys of a Piano");
                     printf("A piano typically has 12 keys as follows:\n");
                     fullPiano(1);
                     printf("From here, it repeats the same 12 keys, with each set being in a different pitch!\nA sharp (#) refers to a key that is one semitone higher (one step to the right) of the key before it, so C# refers to the black key directly to the right of C.\nOn the other hand, a flat (b) refers to a key that is one semitone lower, like how Db can be used to refer to the same black key.\n\nIn some rare occasions, x means double-sharp, and bb means double-flat.");
+
+                    printf("\nPress any key to continue: ");
+                    fgets(cont, sizeof(cont), stdin);
                 }
                 else if (strcmp(infoOption, "2") == 0)
                 {
-                    char scale[STRING_LENGTH];
-                    printf("There are a total of 24 Scales. Which would you like to learn more about?\n");
-                    printf(" ___________________________________________________________________________________________________________\n");
-                    printf("|           |       |       |       |       |       |       |       |       |       |       |       |       |\n");
-                    printf("|   Major   |   A   |  Bb   |   B   |   C   |  Db   |   D   |  Eb   |   E   |   F   |  F#   |   G   |  Ab   |\n");
-                    printf("|-----------|-------|-------|-------|-------|-------|-------|-------|-------|-------|-------|-------|-------|\n");
-                    printf("|   Minor   |   Am  |  Bbm  |   Bm  |   Cm  |  C#m  |   Dm  |  D#m  |   Em  |   Fm  |  F#m  |   Gm  |  G#m  |\n");
-                    printf("|___________|_______|_______|_______|_______|_______|_______|_______|_______|_______|_______|_______|_______|\n\n");
                     while (1)
-                    { // Input Validation
-                        printf("Choose a scale: ");
-                        fgets(scale, sizeof(scale), stdin);
-                        scale[strcspn(scale, "\n")] = 0;
-                        size_t len = strlen(scale); // size_t only represents non-negative values and is commonly used for array lengths.
+                    {
+                        char scale[STRING_LENGTH];
+                        header("The 24 Music Scales");
+                        printf("There are a total of 24 Major and Minor Scales. Which would you like to learn more about?\n");
+                        printf(" ___________________________________________________________________________________________________________\n");
+                        printf("|           |       |       |       |       |       |       |       |       |       |       |       |       |\n");
+                        printf("|   Major   |   A   |  Bb   |   B   |   C   |  Db   |   D   |  Eb   |   E   |   F   |  F#   |   G   |  Ab   |\n");
+                        printf("|-----------|-------|-------|-------|-------|-------|-------|-------|-------|-------|-------|-------|-------|\n");
+                        printf("|   Minor   |   Am  |  Bbm  |   Bm  |   Cm  |  C#m  |   Dm  |  D#m  |   Em  |   Fm  |  F#m  |   Gm  |  G#m  |\n");
+                        printf("|___________|_______|_______|_______|_______|_______|_______|_______|_______|_______|_______|_______|_______|\n\n");
+                        while (1)
+                        { // Input Validation
+                            printf("Choose a scale: ");
+                            fgets(scale, sizeof(scale), stdin);
+                            scale[strcspn(scale, "\n")] = 0;
+                            size_t len = strlen(scale); // size_t only represents non-negative values and is commonly used for array lengths.
 
-                        if (len > 0 && scale[len - 1] == '\n')
-                        { // Removes newline character if somehow it pops up
-                            scale[len - 1] = '\0';
-                            len--;
-                        }
+                            if (len > 0 && scale[len - 1] == '\n')
+                            { // Removes newline character if somehow it pops up
+                                scale[len - 1] = '\0';
+                                len--;
+                            }
 
-                        // Check if the last character is 'm'
-                        if (len > 0 && scale[len - 1] == 'm')
-                        {
-                            scale[len - 1] = '\0'; // Removes the 'm' and then searches it within the MinorScaleArray
-                            len--;
-                            if (searchScale(scale, 0))
+                            // Check if the last character is 'm'
+                            if (len > 0 && scale[len - 1] == 'm')
                             {
-                                if (strcmp(scale, "A") == 0)
+                                scale[len - 1] = '\0'; // Removes the 'm' and then searches it within the MinorScaleArray
+                                len--;
+                                if (searchScale(scale, 0))
                                 {
-                                    char stringArray[ARRAY_SIZE][STRING_LENGTH] = {"C ", "  ", "D ", "  ", "E ", "F ", "  ", "  ", "G#", "A ", "  ", "B ", '\0'}, print[7][3] = {"A", "B", "C", "D", "E", "F", "G#"};
-                                    piano(stringArray, scale, 0, 1, 0, print);
+                                    if (strcmp(scale, "A") == 0)
+                                    {
+                                        char stringArray[ARRAY_SIZE][STRING_LENGTH] = {"C ", "  ", "D ", "  ", "E ", "F ", "  ", "  ", "G#", "A ", "  ", "B ", '\0'}, print[7][3] = {"A", "B", "C", "D", "E", "F", "G#"};
+                                        piano(stringArray, scale, 0, 1, 0, print);
+                                    }
+                                    else if (strcmp(scale, "Bb") == 0)
+                                    {
+                                        char stringArray[ARRAY_SIZE][STRING_LENGTH] = {"C ", "Db", "  ", "Eb", "  ", "F ", "Gb", "  ", "  ", "A ", "Bb", "  ", '\0'}, print[7][3] = {"Bb", "C", "Db", "Eb", "F", "Gb", "A"};
+                                        piano(stringArray, scale, 0, 0, 4, print);
+                                    }
+                                    else if (strcmp(scale, "B") == 0)
+                                    {
+                                        char stringArray[ARRAY_SIZE][STRING_LENGTH] = {"  ", "C#", "D ", "  ", "E ", "  ", "F#", "G ", "  ", "  ", "A#", "B ", '\0'}, print[7][3] = {"B", "C#", "D", "E", "F#", "G", "A#"};
+                                        piano(stringArray, scale, 0, 3, 0, print);
+                                    }
+                                    else if (strcmp(scale, "C") == 0)
+                                    {
+                                        char stringArray[ARRAY_SIZE][STRING_LENGTH] = {"C ", "  ", "D ", "Eb", "  ", "F ", "  ", "G ", "Ab", "  ", "  ", "B ", '\0'}, print[7][3] = {"C", "D", "Eb", "F", "G", "Ab", "B"};
+                                        piano(stringArray, scale, 0, 0, 2, print);
+                                    }
+                                    else if (strcmp(scale, "C#") == 0)
+                                    {
+                                        char stringArray[ARRAY_SIZE][STRING_LENGTH] = {"B#", "C#", "  ", "D#", "E ", "  ", "F#", "  ", "G#", "A ", "  ", "  ", '\0'}, print[7][3] = {"C#", "D#", "E", "F#", "G#", "A", "B#"};
+                                        piano(stringArray, scale, 0, 5, 0, print);
+                                    }
+                                    else if (strcmp(scale, "D") == 0)
+                                    {
+                                        char stringArray[ARRAY_SIZE][STRING_LENGTH] = {"  ", "C#", "D ", "  ", "E ", "F ", "  ", "G ", "  ", "A ", "Bb", "  ", '\0'}, print[7][3] = {"D", "E", "F", "G", "A", "Bb", "C#"};
+                                        piano(stringArray, scale, 0, 1, 1, print);
+                                    }
+                                    else if (strcmp(scale, "D#") == 0)
+                                    {
+                                        char stringArray[ARRAY_SIZE][STRING_LENGTH] = {"  ", "  ", "C𝄪", "D#", "  ", "E#", "F#", "  ", "G#", "  ", "A#", "B ", '\0'}, print[7][3] = {"D#", "E#", "F#", "G#", "A#", "B", "Cx"};
+                                        piano(stringArray, scale, 0, 6, 0, print);
+                                    }
+                                    else if (strcmp(scale, "E") == 0)
+                                    {
+                                        char stringArray[ARRAY_SIZE][STRING_LENGTH] = {"C ", "  ", "  ", "D#", "E ", "  ", "F#", "G ", "  ", "A ", "  ", "B ", '\0'}, print[7][3] = {"E", "F#", "G", "A", "B", "C", "D#"};
+                                        piano(stringArray, scale, 0, 2, 0, print);
+                                    }
+                                    else if (strcmp(scale, "F") == 0)
+                                    {
+                                        char stringArray[ARRAY_SIZE][STRING_LENGTH] = {"C ", "Db", "  ", "  ", "E ", "F ", "  ", "G ", "Ab", "  ", "Bb", "  ", '\0'}, print[7][3] = {"F", "G", "Ab", "Bb", "C", "Db", "E"};
+                                        piano(stringArray, scale, 0, 0, 3, print);
+                                    }
+                                    else if (strcmp(scale, "F#") == 0)
+                                    {
+                                        char stringArray[ARRAY_SIZE][STRING_LENGTH] = {"  ", "C#", "D ", "  ", "  ", "E#", "F#", "  ", "G#", "  ", "A ", "B ", '\0'}, print[7][3] = {"F#", "G#", "A", "B", "C#", "D", "E#"};
+                                        piano(stringArray, scale, 0, 4, 0, print);
+                                    }
+                                    else if (strcmp(scale, "G") == 0)
+                                    {
+                                        char stringArray[ARRAY_SIZE][STRING_LENGTH] = {"C ", "  ", "D ", "Eb", "  ", "F ", "  ", "G ", "  ", "A ", "Bb", "  ", '\0'}, print[7][3] = {"G", "A", "Bb", "C", "D", "Eb", "F"};
+                                        piano(stringArray, scale, 0, 1, 2, print);
+                                    }
+                                    else if (strcmp(scale, "G#") == 0)
+                                    {
+                                        char stringArray[ARRAY_SIZE][STRING_LENGTH] = {"  ", "C#", "  ", "D#", "E ", "  ", "  ", "F𝄪", "G#", "  ", "A#", "B ", '\0'}, print[7][3] = {"G#", "A#", "B", "C#", "D#", "E", "Fx"};
+                                        piano(stringArray, scale, 0, 5, 0, print);
+                                    }
+                                    break;
                                 }
-                                else if (strcmp(scale, "Bb") == 0)
-                                {
-                                    char stringArray[ARRAY_SIZE][STRING_LENGTH] = {"C ", "Db", "  ", "Eb", "  ", "F ", "Gb", "  ", "  ", "A ", "Bb", "  ", '\0'}, print[7][3] = {"Bb", "C", "Db", "Eb", "F", "Gb", "A"};
-                                    piano(stringArray, scale, 0, 0, 4, print);
-                                }
-                                else if (strcmp(scale, "B") == 0)
-                                {
-                                    char stringArray[ARRAY_SIZE][STRING_LENGTH] = {"  ", "C#", "D ", "  ", "E ", "  ", "F#", "G ", "  ", "  ", "A#", "B ", '\0'}, print[7][3] = {"B", "C#", "D", "E", "F#", "G", "A#"};
-                                    piano(stringArray, scale, 0, 3, 0, print);
-                                }
-                                else if (strcmp(scale, "C") == 0)
-                                {
-                                    char stringArray[ARRAY_SIZE][STRING_LENGTH] = {"C ", "  ", "D ", "Eb", "  ", "F ", "  ", "G ", "Ab", "  ", "  ", "B ", '\0'}, print[7][3] = {"C", "D", "Eb", "F", "G", "Ab", "B"};
-                                    piano(stringArray, scale, 0, 0, 2, print);
-                                }
-                                else if (strcmp(scale, "C#") == 0)
-                                {
-                                    char stringArray[ARRAY_SIZE][STRING_LENGTH] = {"B#", "C#", "  ", "D#", "E ", "  ", "F#", "  ", "G#", "A ", "  ", "  ", '\0'}, print[7][3] = {"C#", "D#", "E", "F#", "G#", "A", "B#"};
-                                    piano(stringArray, scale, 0, 5, 0, print);
-                                }
-                                else if (strcmp(scale, "D") == 0)
-                                {
-                                    char stringArray[ARRAY_SIZE][STRING_LENGTH] = {"  ", "C#", "D ", "  ", "E ", "F ", "  ", "G ", "  ", "A ", "Bb", "  ", '\0'}, print[7][3] = {"D", "E", "F", "G", "A", "Bb", "C#"};
-                                    piano(stringArray, scale, 0, 1, 1, print);
-                                }
-                                else if (strcmp(scale, "D#") == 0)
-                                {
-                                    char stringArray[ARRAY_SIZE][STRING_LENGTH] = {"  ", "  ", "C𝄪", "D#", "  ", "E#", "F#", "  ", "G#", "  ", "A#", "B ", '\0'}, print[7][3] = {"D#", "E#", "F#", "G#", "A#", "B", "Cx"};
-                                    piano(stringArray, scale, 0, 6, 0, print);
-                                }
-                                else if (strcmp(scale, "E") == 0)
-                                {
-                                    char stringArray[ARRAY_SIZE][STRING_LENGTH] = {"C ", "  ", "  ", "D#", "E ", "  ", "F#", "G ", "  ", "A ", "  ", "B ", '\0'}, print[7][3] = {"E", "F#", "G", "A", "B", "C", "D#"};
-                                    piano(stringArray, scale, 0, 2, 0, print);
-                                }
-                                else if (strcmp(scale, "F") == 0)
-                                {
-                                    char stringArray[ARRAY_SIZE][STRING_LENGTH] = {"C ", "Db", "  ", "  ", "E ", "F ", "  ", "G ", "Ab", "  ", "Bb", "  ", '\0'}, print[7][3] = {"F", "G", "Ab", "Bb", "C", "Db", "E"};
-                                    piano(stringArray, scale, 0, 0, 3, print);
-                                }
-                                else if (strcmp(scale, "F#") == 0)
-                                {
-                                    char stringArray[ARRAY_SIZE][STRING_LENGTH] = {"  ", "C#", "D ", "  ", "  ", "E#", "F#", "  ", "G#", "  ", "A ", "B ", '\0'}, print[7][3] = {"F#", "G#", "A", "B", "C#", "D", "E#"};
-                                    piano(stringArray, scale, 0, 4, 0, print);
-                                }
-                                else if (strcmp(scale, "G") == 0)
-                                {
-                                    char stringArray[ARRAY_SIZE][STRING_LENGTH] = {"C ", "  ", "D ", "Eb", "  ", "F ", "  ", "G ", "  ", "A ", "Bb", "  ", '\0'}, print[7][3] = {"G", "A", "Bb", "C", "D", "Eb", "F"};
-                                    piano(stringArray, scale, 0, 1, 2, print);
-                                }
-                                else if (strcmp(scale, "G#") == 0)
-                                {
-                                    char stringArray[ARRAY_SIZE][STRING_LENGTH] = {"  ", "C#", "  ", "D#", "E ", "  ", "  ", "F𝄪", "G#", "  ", "A#", "B ", '\0'}, print[7][3] = {"G#", "A#", "B", "C#", "D#", "E", "Fx"};
-                                    piano(stringArray, scale, 0, 5, 0, print);
-                                }
-                                break;
+                                printf("Invalid input!\n");
                             }
-                            printf("Invalid input!\n");
+                            else
+                            {
+                                if (searchScale(scale, 1)) // Searches whether it exists within the MajorScaleArray
+                                {
+                                    if (strcmp(scale, "A") == 0)
+                                    {
+                                        char stringArray[ARRAY_SIZE][STRING_LENGTH] = {"  ", "C#", "D ", "  ", "E ", "  ", "F#", "  ", "G#", "A ", "  ", "B ", '\0'}, print[7][3] = {"A", "B", "C#", "D", "E", "F#", "G#"};
+                                        piano(stringArray, scale, 1, 3, 0, print);
+                                    }
+                                    else if (strcmp(scale, "Bb") == 0)
+                                    {
+                                        char stringArray[ARRAY_SIZE][STRING_LENGTH] = {"C ", "  ", "D ", "Eb", "  ", "F ", "  ", "G ", "  ", "A ", "Bb", "  ", '\0'}, print[7][3] = {"Bb", "C", "D", "Eb", "F", "G", "A"};
+                                        piano(stringArray, scale, 1, 0, 2, print);
+                                    }
+                                    else if (strcmp(scale, "B") == 0)
+                                    {
+                                        char stringArray[ARRAY_SIZE][STRING_LENGTH] = {"  ", "C#", "  ", "D#", "E ", "  ", "F#", "  ", "G#", "  ", "A#", "B ", '\0'}, print[7][3] = {"B", "C#", "D#", "E", "F#", "G#", "A#"};
+                                        piano(stringArray, scale, 1, 5, 0, print);
+                                    }
+                                    else if (strcmp(scale, "C") == 0)
+                                    {
+                                        char stringArray[ARRAY_SIZE][STRING_LENGTH] = {"C ", "  ", "D ", "  ", "E ", "F ", "  ", "G ", "  ", "A ", "  ", "B ", '\0'}, print[7][3] = {"C", "D", "E", "F", "G", "A", "B"};
+                                        piano(stringArray, scale, 1, 0, 0, print);
+                                    }
+                                    else if (strcmp(scale, "Db") == 0)
+                                    {
+                                        char stringArray[ARRAY_SIZE][STRING_LENGTH] = {"C ", "Db", "  ", "Eb", "  ", "F ", "Gb", "  ", "Ab", "  ", "Bb", "  ", '\0'}, print[7][3] = {"Db", "Eb", "F", "Gb", "Ab", "Bb", "C"};
+                                        piano(stringArray, scale, 1, 0, 5, print);
+                                    }
+                                    else if (strcmp(scale, "D") == 0)
+                                    {
+                                        char stringArray[ARRAY_SIZE][STRING_LENGTH] = {"  ", "C#", "D ", "  ", "E ", "  ", "F#", "G ", "  ", "A ", "  ", "B ", '\0'}, print[7][3] = {"D", "E", "F#", "G", "A", "B", "C#"};
+                                        piano(stringArray, scale, 1, 2, 0, print);
+                                    }
+                                    else if (strcmp(scale, "Eb") == 0)
+                                    {
+                                        char stringArray[ARRAY_SIZE][STRING_LENGTH] = {"C ", "  ", "D ", "Eb", "  ", "F ", "  ", "G ", "Ab", "  ", "Bb", "  ", '\0'}, print[7][3] = {"Eb", "F", "G", "Ab", "Bb", "C", "D"};
+                                        piano(stringArray, scale, 1, 0, 3, print);
+                                    }
+                                    else if (strcmp(scale, "E") == 0)
+                                    {
+                                        char stringArray[ARRAY_SIZE][STRING_LENGTH] = {"  ", "C#", "  ", "D#", "E ", "  ", "F#", "  ", "G#", "A ", "  ", "B ", '\0'}, print[7][3] = {"E", "F#", "G#", "A", "B", "C#", "D#"};
+                                        piano(stringArray, scale, 1, 4, 0, print);
+                                    }
+                                    else if (strcmp(scale, "F") == 0)
+                                    {
+                                        char stringArray[ARRAY_SIZE][STRING_LENGTH] = {"C ", "  ", "D ", "  ", "E ", "F ", "  ", "G ", "  ", "A ", "Bb", "  ", '\0'}, print[7][3] = {"F", "G", "A", "Bb", "C", "D", "E"};
+                                        piano(stringArray, scale, 1, 0, 1, print);
+                                    }
+                                    else if (strcmp(scale, "F#") == 0)
+                                    {
+                                        char stringArray[ARRAY_SIZE][STRING_LENGTH] = {"  ", "C#", "  ", "D#", "  ", "E#", "F#", "  ", "G#", "  ", "A#", "B ", '\0'}, print[7][3] = {"F#", "G#", "A#", "B", "C#", "D#", "E#"};
+                                        piano(stringArray, scale, 1, 6, 0, print);
+                                    }
+                                    else if (strcmp(scale, "G") == 0)
+                                    {
+                                        char stringArray[ARRAY_SIZE][STRING_LENGTH] = {"C ", "  ", "D ", "  ", "E ", "  ", "F#", "G ", "  ", "A ", "  ", "B ", '\0'}, print[7][3] = {"G", "A", "B", "C", "D", "E", "F#"};
+                                        piano(stringArray, scale, 1, 1, 0, print);
+                                    }
+                                    else if (strcmp(scale, "Ab") == 0)
+                                    {
+                                        char stringArray[ARRAY_SIZE][STRING_LENGTH] = {"C ", "Db", "  ", "Eb", "  ", "F ", "  ", "G ", "Ab", "  ", "Bb", "  ", '\0'}, print[7][3] = {"Ab", "Bb", "C", "Db", "Eb", "F", "G"};
+                                        piano(stringArray, scale, 1, 0, 4, print);
+                                    }
+                                    break;
+                                }
+                                printf("Invalid input!\n");
+                            }
                         }
-                        else
+                        printf("\nPress C take a look at another scale, and anything else to go back: ");
+                        fgets(cont, sizeof(cont), stdin);
+                        cont[strcspn(cont, "\n")] = 0;
+                        if (strcmp(cont, "C") != 0)
                         {
-                            if (searchScale(scale, 1)) // Searches whether it exists within the MajorScaleArray
-                            {
-                                if (strcmp(scale, "A") == 0)
-                                {
-                                    char stringArray[ARRAY_SIZE][STRING_LENGTH] = {"  ", "C#", "D ", "  ", "E ", "  ", "F#", "  ", "G#", "A ", "  ", "B ", '\0'}, print[7][3] = {"A", "B", "C#", "D", "E", "F#", "G#"};
-                                    piano(stringArray, scale, 1, 3, 0, print);
-                                }
-                                else if (strcmp(scale, "Bb") == 0)
-                                {
-                                    char stringArray[ARRAY_SIZE][STRING_LENGTH] = {"C ", "  ", "D ", "Eb", "  ", "F ", "  ", "G ", "  ", "A ", "Bb", "  ", '\0'}, print[7][3] = {"Bb", "C", "D", "Eb", "F", "G", "A"};
-                                    piano(stringArray, scale, 1, 0, 2, print);
-                                }
-                                else if (strcmp(scale, "B") == 0)
-                                {
-                                    char stringArray[ARRAY_SIZE][STRING_LENGTH] = {"  ", "C#", "  ", "D#", "E ", "  ", "F#", "  ", "G#", "  ", "A#", "B ", '\0'}, print[7][3] = {"B", "C#", "D#", "E", "F#", "G#", "A#"};
-                                    piano(stringArray, scale, 1, 5, 0, print);
-                                }
-                                else if (strcmp(scale, "C") == 0)
-                                {
-                                    char stringArray[ARRAY_SIZE][STRING_LENGTH] = {"C ", "  ", "D ", "  ", "E ", "F ", "  ", "G ", "  ", "A ", "  ", "B ", '\0'}, print[7][3] = {"C", "D", "E", "F", "G", "A", "B"};
-                                    piano(stringArray, scale, 1, 0, 0, print);
-                                }
-                                else if (strcmp(scale, "Db") == 0)
-                                {
-                                    char stringArray[ARRAY_SIZE][STRING_LENGTH] = {"C ", "Db", "  ", "Eb", "  ", "F ", "Gb", "  ", "Ab", "  ", "Bb", "  ", '\0'}, print[7][3] = {"Db", "Eb", "F", "Gb", "Ab", "Bb", "C"};
-                                    piano(stringArray, scale, 1, 0, 5, print);
-                                }
-                                else if (strcmp(scale, "D") == 0)
-                                {
-                                    char stringArray[ARRAY_SIZE][STRING_LENGTH] = {"  ", "C#", "D ", "  ", "E ", "  ", "F#", "G ", "  ", "A ", "  ", "B ", '\0'}, print[7][3] = {"D", "E", "F#", "G", "A", "B", "C#"};
-                                    piano(stringArray, scale, 1, 2, 0, print);
-                                }
-                                else if (strcmp(scale, "Eb") == 0)
-                                {
-                                    char stringArray[ARRAY_SIZE][STRING_LENGTH] = {"C ", "  ", "D ", "Eb", "  ", "F ", "  ", "G ", "Ab", "  ", "Bb", "  ", '\0'}, print[7][3] = {"Eb", "F", "G", "Ab", "Bb", "C", "D"};
-                                    piano(stringArray, scale, 1, 0, 3, print);
-                                }
-                                else if (strcmp(scale, "E") == 0)
-                                {
-                                    char stringArray[ARRAY_SIZE][STRING_LENGTH] = {"  ", "C#", "  ", "D#", "E ", "  ", "F#", "  ", "G#", "A ", "  ", "B ", '\0'}, print[7][3] = {"E", "F#", "G#", "A", "B", "C#", "D#"};
-                                    piano(stringArray, scale, 1, 4, 0, print);
-                                }
-                                else if (strcmp(scale, "F") == 0)
-                                {
-                                    char stringArray[ARRAY_SIZE][STRING_LENGTH] = {"C ", "  ", "D ", "  ", "E ", "F ", "  ", "G ", "  ", "A ", "Bb", "  ", '\0'}, print[7][3] = {"F", "G", "A", "Bb", "C", "D", "E"};
-                                    piano(stringArray, scale, 1, 0, 1, print);
-                                }
-                                else if (strcmp(scale, "F#") == 0)
-                                {
-                                    char stringArray[ARRAY_SIZE][STRING_LENGTH] = {"  ", "C#", "  ", "D#", "  ", "E#", "F#", "  ", "G#", "  ", "A#", "B ", '\0'}, print[7][3] = {"F#", "G#", "A#", "B", "C#", "D#", "E#"};
-                                    piano(stringArray, scale, 1, 6, 0, print);
-                                }
-                                else if (strcmp(scale, "G") == 0)
-                                {
-                                    char stringArray[ARRAY_SIZE][STRING_LENGTH] = {"C ", "  ", "D ", "  ", "E ", "  ", "F#", "G ", "  ", "A ", "  ", "B ", '\0'}, print[7][3] = {"G", "A", "B", "C", "D", "E", "F#"};
-                                    piano(stringArray, scale, 1, 1, 0, print);
-                                }
-                                else if (strcmp(scale, "Ab") == 0)
-                                {
-                                    char stringArray[ARRAY_SIZE][STRING_LENGTH] = {"C ", "Db", "  ", "Eb", "  ", "F ", "  ", "G ", "Ab", "  ", "Bb", "  ", '\0'}, print[7][3] = {"Ab", "Bb", "C", "Db", "Eb", "F", "G"};
-                                    piano(stringArray, scale, 1, 0, 4, print);
-                                }
-                                break;
-                            }
-                            printf("Invalid input!\n");
+                            break;
                         }
                     }
                 }
                 else if (strcmp(infoOption, "3") == 0)
                 {
+                    header("Music Transposition");
                 }
                 else
                 {
@@ -306,7 +339,7 @@ int main()
         }
         else if (strcmp(option, "4") == 0)
         {
-            // Settings
+            header("Settings");
         }
         else
         {
@@ -316,6 +349,25 @@ int main()
     }
 }
 // Function Definitions
+
+void header(const char *input)
+{
+    int i = 0, length = 8;
+    printf("\n\n");
+    while (i < length)
+    {
+        printf("=");
+        i++;
+    }
+    printf(" %s ", input);
+    i = 0;
+    while (i < length)
+    {
+        printf("=");
+        i++;
+    }
+    printf("\n\n");
+}
 
 const char *flatConvert(const char *input)
 {
