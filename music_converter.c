@@ -6,12 +6,13 @@
 #define STRING_LENGTH 10
 
 // Function Prototypes
-int searchNote(const char *input);
-int searchScale(const char *scale, int major);
-const char *shiftNote(const char *input, int shift);
-int shiftFinder(const char *startScale, const char *endScale);
-void fullPiano();
-void piano(char arr[ARRAY_SIZE][STRING_LENGTH], const char *scale, int major, int sharp, int flat, char print[7][3]);
+const char *flatConvert(const char *input);                                                                           // Converts notes with flats to their sharp equivalents for processing
+int searchNote(const char *input);                                                                                    // Searches for a note, usually to see if its a valid input
+int searchScale(const char *scale, int major);                                                                        // Similar to searchNote, but for scales
+const char *shiftNote(const char *input, int shift);                                                                  // To find the value x positions to the right of a note in an array
+int shiftFinder(const char *startScale, const char *endScale);                                                        // To find what's the x positions needed
+void fullPiano();                                                                                                     // Prints the default piano with all the notes
+void piano(char arr[ARRAY_SIZE][STRING_LENGTH], const char *scale, int major, int sharp, int flat, char print[7][3]); // A more modifyable piano
 
 // Define a 2D array of notes
 char NoteArray[30][STRING_LENGTH] = {"C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"};
@@ -314,12 +315,37 @@ int main()
         }
     }
 }
-
 // Function Definitions
+
+const char *flatConvert(const char *input)
+{
+    if (strcmp(input, "Db") == 0)
+    {
+        return "C#";
+    }
+    else if (strcmp(input, "Eb") == 0)
+    {
+        return "D#";
+    }
+    else if (strcmp(input, "Gb") == 0)
+    {
+        return "F#";
+    }
+    else if (strcmp(input, "Ab") == 0)
+    {
+        return "G#";
+    }
+    else if (strcmp(input, "Bb") == 0)
+    {
+        return "A#";
+    }
+    return input;
+}
 
 int searchNote(const char *input)
 {
     int i = 0;
+    input = flatConvert(input);
     while (i < ARRAY_SIZE) // Sieves through NoteArray to find the input note
     {
         if (strcmp(input, NoteArray[i]) == 0)
@@ -362,19 +388,22 @@ const char *shiftNote(const char *input, int shift)
     int i = 0;
     while (i < ARRAY_SIZE)
     {
+        input = flatConvert(input);
         if (strcmp(input, NoteArray[i]) == 0)
         {
             return NoteArray[i + shift];
         }
         i++;
     }
-    return " "; // Handle error case
+    return "Error"; // Handle error case
 }
 
 int shiftFinder(const char *startScale, const char *endScale)
 {
     int startIndex = -1, endIndex = -1;
     int i = 0;
+    startScale = flatConvert(startScale);
+    endScale = flatConvert(endScale);
 
     while (i < ARRAY_SIZE)
     {
@@ -422,12 +451,15 @@ void piano(char arr[ARRAY_SIZE][STRING_LENGTH], const char *scale, int major, in
     if (major)
     {
         printf("The notes of %s Major are ", scale);
-    } else {
+    }
+    else
+    {
         printf("The notes of %s Minor are ", scale);
     }
 
     int i = 0;
-    while (i < 7) {
+    while (i < 7)
+    {
         printf("%s ", print[i]);
         i++;
     }
