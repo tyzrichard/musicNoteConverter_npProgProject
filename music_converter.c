@@ -26,6 +26,7 @@ int main()
     printf("\nWelcome to my Music Transposer!");
     char option[STRING_LENGTH];
     char cont[STRING_LENGTH];
+    int extraInfo = 0;
     while (1)
     {
         header("Main Menu");
@@ -108,7 +109,7 @@ int main()
                 }
 
                 // Process notes
-                printf("\nYou entered %d notes in %s %s:\n", count, initialScale, majorStr);
+                printf("\nYou entered %d notes in %s %s: ", count, initialScale, majorStr);
                 shift = shiftFinder(initialScale, finalScale);
                 while (i < count)
                 {
@@ -117,15 +118,34 @@ int main()
                     i++;
                 }
 
+                if (extraInfo)
+                {
+                    transposeExplain(initialScale, finalScale, shift);
+                    i = 0;                 // Reset i to 0
+                    while (i < ARRAY_SIZE) // Prints out each input note and how they are transposed up semitone by semitone
+                    {
+                        if (strcmp(inputList[i], "") == 0)
+                        {
+                            break;
+                        }
+                        int j = 0;
+                        printf("\n%s ", inputList[i]);
+                        while (j < shift)
+                        {
+                            j++;
+                            printf("> %s ", shiftNote(inputList[i], j));
+                        }
+                        i++;
+                    }
+                }
+
                 i = 0; // reset i to 0
-                printf("\nAfter being shifted to %s %s, the notes are:\n", finalScale, majorStr);
+                printf("\nAfter being shifted to %s %s, the notes are: ", finalScale, majorStr);
                 while (i < count)
                 {
                     printf("%s ", outputList[i]);
                     i++;
                 }
-
-                transposeExplain(initialScale, finalScale, shift);
 
                 printf("\nPress C to convert another scale, and anything else to go back: ");
                 fgets(cont, sizeof(cont), stdin);
@@ -344,6 +364,7 @@ int main()
         else if (strcmp(option, "4") == 0)
         {
             header("Settings");
+            
         }
         else
         {
@@ -512,6 +533,7 @@ void transposeExplain(const char *startScale, const char *endScale, int shift)
         "  ",
     };
     int i = 0, count = 0;
+    printf("\nTo transpose from %s to %s, each note would need to be shifted by %d semitones.", startScale, endScale, shift);
     while (i < ARRAY_SIZE)
     {
         if (!count && strcmp(NoteArray[i], flatConvert(startScale)) == 0)
@@ -534,7 +556,9 @@ void transposeExplain(const char *startScale, const char *endScale, int shift)
             if (count >= 10)
             {
                 sprintf(buffer, "%d", count);
-            } else sprintf(buffer, "%d ", count);
+            }
+            else
+                sprintf(buffer, "%d ", count);
             strcpy(arr[i % 12], buffer);
             break;
         }
@@ -544,7 +568,9 @@ void transposeExplain(const char *startScale, const char *endScale, int shift)
             if (count >= 10)
             {
                 sprintf(buffer, "%d", count);
-            } else sprintf(buffer, "%d ", count);
+            }
+            else
+                sprintf(buffer, "%d ", count);
             strcpy(arr[i % 12], buffer);
             count++;
         }
