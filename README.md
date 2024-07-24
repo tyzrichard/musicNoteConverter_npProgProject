@@ -4,7 +4,7 @@ This is a simple program in C that transposes music from one scale to another. I
 This project is kinda weird(?) in that we are only allowed to use concepts taught before the point of submission despite me knowing all the taught concepts beforehand - its all pretty basic (except the last one). Due to these restrictions, this project will be scaled up in three distinct phases, each having more capabilities than the previous one:
 
 ### Version 1
-Being restricted to printf, scanf, simple variables and arithmetic (no if-else, loops, or other 'complex' concepts), the simplest version of the code just takes in a singular music note, the number of semitones to shift it out, and simply just outputs a summary of the user's inputs.
+Being restricted to printf, scanf, simple variables and arithmetic (no if-else, loops, or other 'complex' concepts), the simplest version of the code just takes in a singular music note, the number of semitones to shift it up by, and simply just outputs a summary of the user's inputs.
 
 ### Version 2
 With If-Else statements being allowed, I upgraded my program to transpose music notes from C Major to any of the following scales:
