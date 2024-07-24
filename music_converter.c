@@ -64,9 +64,9 @@ int main()
                 while (1) // Input Validation
                 {
                     printf("Enter the scale that you would like to transpose from: ");
-                    scanf("%s", initialScale);
-                    getchar();                            // Consume the newline character left in the buffer by scanf
-                    if (searchScale(initialScale, major)) // to search through Major/Minor ScaleArray
+                    fgets(initialScale, sizeof(initialScale), stdin);
+                    initialScale[strcspn(initialScale, "\n")] = '\0'; // remove newline character if needed
+                    if (initialScale[0] != '\0' && searchScale(initialScale, major)) // to search through Major/Minor ScaleArray
                     {
                         break;
                     }
@@ -75,9 +75,9 @@ int main()
                 while (1) // Input Validation
                 {
                     printf("Enter the scale you would like to transpose to: ");
-                    scanf("%s", finalScale);
-                    getchar();                          // Consume the newline character left in the buffer by scanf
-                    if (searchScale(finalScale, major)) // to search through Major/Minor ScaleArray
+                    fgets(finalScale, sizeof(finalScale), stdin);
+                    finalScale[strcspn(finalScale, "\n")] = '\0';
+                    if (initialScale[0] != '\0' && searchScale(initialScale, major)) // to search through Major/Minor ScaleArray
                     {
                         break;
                     }
@@ -352,7 +352,7 @@ int main()
                         }
                         if (!autoreturn)
                         {
-                            printf("\nPress C take a look at another scale, and anything else to go back: ");
+                            printf("\nPress C to take a look at another scale, and anything else to go back: ");
                             fgets(cont, sizeof(cont), stdin);
                             cont[strcspn(cont, "\n")] = 0;
                             if (strcmp(cont, "C") != 0)
