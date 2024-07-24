@@ -77,11 +77,11 @@ int main()
                     printf("Enter the scale you would like to transpose to: ");
                     fgets(finalScale, sizeof(finalScale), stdin);
                     finalScale[strcspn(finalScale, "\n")] = '\0'; // remove newline character if needed
-                    if (finalScale[0] != '\0' && searchScale(finalScale, major)) // to search through Major/Minor ScaleArray
+                    if (finalScale[0] != '\0' && searchScale(finalScale, major) && strcmp(initialScale, finalScale) != 0) // to search through Major/Minor ScaleArray
                     {
                         break;
                     }
-                    printf("Invalid input! Please enter a valid scale.\n");
+                    printf("Invalid input! Please enter a valid scale, and note that it must be different from the initial scale!\n");
                 }
 
                 while (count < ARRAY_SIZE) // Takes in the user's notes and stores them in the inputList array
@@ -202,6 +202,7 @@ int main()
                             printf("Choose a scale: ");
                             fgets(scale, sizeof(scale), stdin);
                             scale[strcspn(scale, "\n")] = 0;
+                            
                             size_t len = strlen(scale); // size_t only represents non-negative values and is commonly used for array lengths.
 
                             if (len > 0 && scale[len - 1] == '\n')
@@ -215,7 +216,7 @@ int main()
                             {
                                 scale[len - 1] = '\0'; // Removes the 'm' and then searches it within the MinorScaleArray
                                 len--;
-                                if (searchScale(scale, 0)) // Here, I just pass a LOT of values to the pianoExplain function and let it do its thing
+                                if (searchScale(scale, 0) && scale[0] != '\0') // Here, I just pass a LOT of values to the pianoExplain function and let it do its thing
                                 {
                                     if (strcmp(scale, "A") == 0)
                                     {
@@ -279,11 +280,11 @@ int main()
                                     }
                                     break;
                                 }
-                                printf("Invalid input!\n");
+                                printf("Invalid input! Please enter a valid scale.\n");
                             }
                             else
                             {
-                                if (searchScale(scale, 1)) // Searches whether it exists within the MajorScaleArray
+                                if (searchScale(scale, 1) && scale[0] != '\0') // Searches whether it exists within the MajorScaleArray
                                 {
                                     if (strcmp(scale, "A") == 0)
                                     {
@@ -347,7 +348,7 @@ int main()
                                     }
                                     break;
                                 }
-                                printf("Invalid input!\n");
+                                printf("Invalid input! Please input a valid scale.\n");
                             }
                         }
                         if (!autoreturn) // If autoreturn is disabled, the user can press C to look at other scales.
