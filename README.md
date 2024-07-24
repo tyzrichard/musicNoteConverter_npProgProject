@@ -1,5 +1,5 @@
-# Music Converter by tyzrichard
-This is a simple program in C that converts music from one scale to another. I made this as part of my Year 1 Programming Project under my school.
+# Music Transposer by tyzrichard
+This is a simple program in C that transposes music from one scale to another. I made this as part of my Year 1 Programming Project under my school.
 
 This project is kinda weird(?) in that we are only allowed to use concepts taught before the point of submission despite me knowing all the taught concepts beforehand - its all pretty basic (except the last one). Due to these restrictions, this project will be scaled up in three distinct phases, each having more capabilities than the previous one:
 
@@ -7,7 +7,7 @@ This project is kinda weird(?) in that we are only allowed to use concepts taugh
 Being restricted to printf, scanf, simple variables and arithmetic (no if-else, loops, or other 'complex' concepts), the simplest version of the code just takes in a singular music note, the number of semitones to shift it out, and simply just outputs a summary of the user's inputs.
 
 ### Version 2
-With If-Else statements being allowed, I upgraded my program to convert music notes from C Major to any of the following scales:
+With If-Else statements being allowed, I upgraded my program to transpose music notes from C Major to any of the following scales:
 - E Major
 - C# Minor
 - Ab Major
@@ -22,8 +22,8 @@ And then I decided to scale it up using extra concepts taught outside class and 
 - Used loops to allow users to **enter more than one note** in order to get an entire string of converted notes.
 - Added lots of **functions** to make my code more modular, with functions such as searching for a note or scale within a list, and printing out an ASCII piano.
 - Finally used **arrays** to shift those music notes
-- Allowed conversion of notes from C Major to ANY Major scale
-- And then, I made it possible to convert from **any Major scale to any Major scale, and any Minor scale to Minor scale**. Just so you know, there's 24 music scales in total!
+- Allowed transposition of notes from C Major to ANY Major scale
+- And then, I made it possible to transpose from **any Major scale to any Major scale, and any Minor scale to Minor scale**. Just so you know, there's 24 music scales in total!
 - For those who aren't as acquianted with music theory and how scale conversion works, I also created a little in-code **Music Theory Guide** to the keys of a piano, the 24 music scales and how transposition actually works. There's also options to reflect the latter when using the program the transpose!
 - And lastly, **Input Validation**. Can't have the program crashing due to incorrect inputs!
 
