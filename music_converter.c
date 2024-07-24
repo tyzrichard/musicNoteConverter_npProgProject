@@ -109,7 +109,7 @@ int main()
                 }
 
                 // Process notes
-                printf("\nYou entered %d notes in %s %s: ", count, initialScale, majorStr);
+                printf("\nYou entered %d note(s) in %s %s: ", count, initialScale, majorStr);
                 shift = shiftFinder(initialScale, finalScale);
                 while (i < count)
                 {
@@ -120,8 +120,8 @@ int main()
 
                 if (extraInfo)
                 {
+                    i = 0; // Reset i to 0
                     transposeExplain(initialScale, finalScale, shift);
-                    i = 0;                 // Reset i to 0
                     while (i < ARRAY_SIZE) // Prints out each input note and how they are transposed up semitone by semitone
                     {
                         if (strcmp(inputList[i], "") == 0)
@@ -140,7 +140,7 @@ int main()
                 }
 
                 i = 0; // reset i to 0
-                printf("\nAfter being shifted to %s %s, the notes are: ", finalScale, majorStr);
+                printf("\nAfter being shifted to %s %s, the note(s) are: ", finalScale, majorStr);
                 while (i < count)
                 {
                     printf("%s ", outputList[i]);
@@ -367,6 +367,14 @@ int main()
                 else if (strcmp(infoOption, "3") == 0)
                 {
                     header("Music Transposition");
+                    printf("The act of transposing music means to shift the melody, or notes to a different pitch. It's like how the pitch of a song changes for the climax, or ending. \nLet's say we have the note C written in E Major, and we want to change it to G Major.\nWe would first want to find the number of semitones between E Major and G Major:\n");
+                    transposeExplain("E", "G", 3);
+                    printf("And thus, we would shift C up 3 semitones to get D#.\n(C > C# > D > D#)\n\nThis works for converting within both Major Scales and within Minor Scales!");
+                    if (!autoreturn)
+                    {
+                        printf("\nPress any key to continue: ");
+                        fgets(cont, sizeof(cont), stdin);
+                    }
                 }
                 else
                 {
@@ -658,11 +666,11 @@ void pianoExplain(char arr[ARRAY_SIZE][STRING_LENGTH], const char *scale, int ma
 {
     if (major)
     {
-        printf("The notes of %s Major are ", scale);
+        printf("\nThe notes of %s Major are ", scale);
     }
     else
     {
-        printf("The notes of %s Minor are ", scale);
+        printf("\nThe notes of %s Minor are ", scale);
     }
 
     int i = 0;
@@ -674,19 +682,19 @@ void pianoExplain(char arr[ARRAY_SIZE][STRING_LENGTH], const char *scale, int ma
 
     if (sharp > 0 && flat > 0)
     {
-        printf("\nIts key signature has %d sharp(s) and %d flat(s).\n", sharp, flat);
+        printf("\nIts key signature has %d sharp(s) and %d flat(s).", sharp, flat);
     }
     else if (sharp > 0)
     {
-        printf("\nIts key signature has %d sharp(s).\n", sharp);
+        printf("\nIts key signature has %d sharp(s).", sharp);
     }
     else if (flat > 0)
     {
-        printf("\nIts key signature has %d flat(s).\n", flat);
+        printf("\nIts key signature has %d flat(s).", flat);
     }
     else
     {
-        printf("\nIts key signature has no sharps or flats.\n");
+        printf("\nIts key signature has no sharps or flats.");
     }
     piano(arr, 0);
 }
