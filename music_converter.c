@@ -1,6 +1,6 @@
 #include <stdio.h>
-#include <string.h>
-#include <ctype.h>
+#include <string.h> //Required for many string functions like strcmp and strcmp
+#include <ctype.h> 
 
 #define ARRAY_SIZE 30
 #define STRING_LENGTH 10
@@ -23,22 +23,22 @@ char MinorScaleArray[ARRAY_SIZE][STRING_LENGTH] = {"C", "C#", "D", "D#", "E", "F
 
 int main()
 {
-    printf("\nWelcome to my Music Transposer!");
+    printf("\nWelcome to my Music Transposer!"); // Welcome, and defines some variables needed for the whole program
     char option[STRING_LENGTH];
     char cont[STRING_LENGTH];
     int extraInfo = 0, autoreturn = 0;
     while (1)
     {
-        header("Main Menu");
+        header("Main Menu"); // The Main Menu of the Code
         printf("1) Transpose between Major Scales\n2) Transpose between Minor Scales\n3) Discover how Music Theory works!\n4) Settings\nEnter anything else to quit.\n\nSelect an option to continue: ");
         fgets(option, sizeof(option), stdin);
         option[strcspn(option, "\n")] = 0;
 
-        if (strcmp(option, "1") == 0 || strcmp(option, "2") == 0) // Transposition
+        if (strcmp(option, "1") == 0 || strcmp(option, "2") == 0) // Option 1 and 2: Transposition
         {
             while (1)
             {
-                // Variables
+                // Variables needed for this section
                 char input[STRING_LENGTH], inputList[ARRAY_SIZE][STRING_LENGTH] = {0}, outputList[ARRAY_SIZE][STRING_LENGTH] = {0};
                 char initialScale[STRING_LENGTH] = {0}, finalScale[STRING_LENGTH] = {0};
                 int shift, count = 0, i = 0;
@@ -76,7 +76,7 @@ int main()
                 {
                     printf("Enter the scale you would like to transpose to: ");
                     fgets(finalScale, sizeof(finalScale), stdin);
-                    finalScale[strcspn(finalScale, "\n")] = '\0';
+                    finalScale[strcspn(finalScale, "\n")] = '\0'; // remove newline character if needed
                     if (initialScale[0] != '\0' && searchScale(initialScale, major)) // to search through Major/Minor ScaleArray
                     {
                         break;
@@ -84,7 +84,7 @@ int main()
                     printf("Invalid input! Please enter a valid scale.\n");
                 }
 
-                while (count < ARRAY_SIZE)
+                while (count < ARRAY_SIZE) // Takes in the user's notes and stores them in the inputList array
                 {
                     printf("Enter a note that you would like to transpose, or press q to end: ");
                     fgets(input, sizeof(input), stdin);
@@ -108,7 +108,7 @@ int main()
                     }
                 }
 
-                // Process notes
+                // Processing the notes: Shifting them using shiftFinder function and displaying collations of input and output
                 printf("\nYou entered %d note(s) in %s %s: ", count, initialScale, majorStr);
                 shift = shiftFinder(initialScale, finalScale);
                 while (i < count)
@@ -118,7 +118,7 @@ int main()
                     i++;
                 }
 
-                if (extraInfo)
+                if (extraInfo) // If the extraInfo setting is enabled, we explain how the transposition worked
                 {
                     i = 0; // Reset i to 0
                     transposeExplain(initialScale, finalScale, shift);
@@ -147,7 +147,7 @@ int main()
                     i++;
                 }
 
-                if (!autoreturn)
+                if (!autoreturn) // If autoreturn setting is disabled, the user is prompted to enter something to return to the Main Menu
                 {
                     printf("\nPress C to convert another scale, and anything else to go back: ");
                     fgets(cont, sizeof(cont), stdin);
@@ -161,30 +161,30 @@ int main()
                     break;
             }
         }
-        else if (strcmp(option, "3") == 0) // How Music Theory Works
+        else if (strcmp(option, "3") == 0) // Option 3: How Music Theory Works
         {
             while (1)
             {
-                char infoOption[STRING_LENGTH];
+                char infoOption[STRING_LENGTH]; // Defining and getting infoOption variable
                 header("How Music Theory Works");
                 printf("1) The different keys of a piano\n2) The 24 Music Scales\n3) Music Transposition\nOr enter anything else to go back.\nYour choice: ");
                 fgets(infoOption, sizeof(infoOption), stdin);
                 infoOption[strcspn(infoOption, "\n")] = 0;
-                if (strcmp(infoOption, "1") == 0)
+                if (strcmp(infoOption, "1") == 0) // infoOption 1: Keys of a piano
                 {
                     header("The Keys of a Piano");
                     printf("A piano typically has 12 keys as follows:\n");
                     char stringArray[ARRAY_SIZE][STRING_LENGTH] = {"C ", "Db", "D ", "Eb", "E ", "F ", "Gb", "G ", "Ab", "A ", "Bb", "B ", '\0'};
-                    piano(stringArray, 1);
+                    piano(stringArray, 1); // Prints out an ASCII piano with all keys labelled
                     printf("From here, it repeats the same 12 keys, with each set being in a different pitch!\nA sharp (#) refers to a key that is one semitone higher (one step to the right) of the key before it, so C# refers to the black key directly to the right of C.\nOn the other hand, a flat (b) refers to a key that is one semitone lower, like how Db can be used to refer to the same black key.\n\nIn some rare occasions, x means double-sharp, and bb means double-flat.");
 
-                    if (!autoreturn)
+                    if (!autoreturn) // If autoreturn is disabled, the user is prompted to enter something before returning to the Main Menu
                     {
                         printf("\nPress any key to continue: ");
                         fgets(cont, sizeof(cont), stdin);
                     }
                 }
-                else if (strcmp(infoOption, "2") == 0)
+                else if (strcmp(infoOption, "2") == 0) // infoOption 2: The 24 Music Scales
                 {
                     while (1)
                     {
@@ -210,12 +210,12 @@ int main()
                                 len--;
                             }
 
-                            // Check if the last character is 'm'
+                            // Check if the last character is 'm', which denotes a Minor scale.
                             if (len > 0 && scale[len - 1] == 'm')
                             {
                                 scale[len - 1] = '\0'; // Removes the 'm' and then searches it within the MinorScaleArray
                                 len--;
-                                if (searchScale(scale, 0))
+                                if (searchScale(scale, 0)) // Here, I just pass a LOT of values to the pianoExplain function and let it do its thing
                                 {
                                     if (strcmp(scale, "A") == 0)
                                     {
@@ -350,7 +350,7 @@ int main()
                                 printf("Invalid input!\n");
                             }
                         }
-                        if (!autoreturn)
+                        if (!autoreturn) // If autoreturn is disabled, the user can press C to look at other scales.
                         {
                             printf("\nPress C to take a look at another scale, and anything else to go back: ");
                             fgets(cont, sizeof(cont), stdin);
@@ -364,13 +364,13 @@ int main()
                             break;
                     }
                 }
-                else if (strcmp(infoOption, "3") == 0)
+                else if (strcmp(infoOption, "3") == 0) // infoOption 3: Music Transposition
                 {
                     header("Music Transposition");
                     printf("The act of transposing music means to shift the melody, or notes to a different pitch. It's like how the pitch of a song changes for the climax, or ending. \nLet's say we have the note C written in E Major, and we want to change it to G Major.\nWe would first want to find the number of semitones between E Major and G Major:\n");
                     transposeExplain("E", "G", 3);
                     printf("And thus, we would shift C up 3 semitones to get D#.\n(C > C# > D > D#)\n\nThis works for converting within both Major Scales and within Minor Scales!");
-                    if (!autoreturn)
+                    if (!autoreturn) // autoreturn works same as before, I'm too lazy to explain for the 3th? 4th? time
                     {
                         printf("\nPress any key to continue: ");
                         fgets(cont, sizeof(cont), stdin);
@@ -382,12 +382,12 @@ int main()
                 }
             }
         }
-        else if (strcmp(option, "4") == 0)
+        else if (strcmp(option, "4") == 0) // Option 4: Settings (not to be confused with infoOptions!)
         {
             while (1)
             {
                 header("Settings");
-                if (extraInfo)
+                if (extraInfo) // Updating values
                 {
                     printf("1) Extra Info during Transposition            ENABLED\n");
                 }
@@ -400,7 +400,7 @@ int main()
                 else
                     printf("2) Auto-return to Menu                        DISABLED\n");
                 printf("\nSelect an option, or press any other key to exit: ");
-                fgets(option, sizeof(option), stdin);
+                fgets(option, sizeof(option), stdin); // Changing values
                 option[strcspn(option, "\n")] = 0;
                 if (strcmp(option, "1") == 0)
                 {
@@ -433,7 +433,7 @@ int main()
         else
         {
             printf("Thanks for using my Music Transposer! See you next time :D\n");
-            break; // Quit the Program
+            break; // Quit the Program for good
         }
     }
 }
@@ -445,20 +445,20 @@ void header(const char *input)
     printf("\n\n");
     while (i < length)
     {
-        printf("=");
+        printf("="); // Prints 8 equal signs...
         i++;
     }
-    printf(" %s ", input);
+    printf(" %s ", input); // ... the header ...
     i = 0;
     while (i < length)
     {
-        printf("=");
+        printf("="); // ... and then 8 more equal signs.
         i++;
     }
     printf("\n\n");
 }
 
-const char *flatConvert(const char *input)
+const char *flatConvert(const char *input) // This one converts flat notes to their sharp equivalents so other functions have an easier time identifying them.
 {
     if (strcmp(input, "Db") == 0)
     {
@@ -536,7 +536,7 @@ const char *shiftNote(const char *input, int shift)
         }
         i++;
     }
-    return "Error"; // Handle error case
+    return 0; // Handle error case
 }
 
 int shiftFinder(const char *startScale, const char *endScale)
@@ -600,21 +600,21 @@ void transposeExplain(const char *startScale, const char *endScale, int shift)
     printf("\nTo transpose from %s to %s, each note would need to be shifted by %d semitones.", startScale, endScale, shift);
     while (i < ARRAY_SIZE)
     {
-        if (!count && strcmp(NoteArray[i], flatConvert(startScale)) == 0)
+        if (!count && strcmp(NoteArray[i], flatConvert(startScale)) == 0) // to find the start note 
         {
             count++;
             char nstartScale[3];
             size_t len = strlen(startScale);
-            if (len == 1) // For single character scales, we add an extra whitespace.
+            if (len == 1) // For single character notes, we add an extra whitespace so it can be properly formatted into the ASCII piano.
             {
                 nstartScale[0] = startScale[0];
                 nstartScale[1] = ' ';
-                strcpy(arr[i % 12], nstartScale);
+                strcpy(arr[i % 12], nstartScale); // we copy the processed note to its position in the arr
             }
             else
                 strcpy(arr[i % 12], startScale);
         }
-        else if (count > 0 && strcmp(NoteArray[i], flatConvert(endScale)) == 0)
+        else if (count > 0 && strcmp(NoteArray[i], flatConvert(endScale)) == 0) // to find the end note
         {
             char buffer[4];
             if (count >= 10)
@@ -626,12 +626,12 @@ void transposeExplain(const char *startScale, const char *endScale, int shift)
             strcpy(arr[i % 12], buffer);
             break;
         }
-        else if (count > 0)
+        else if (count > 0) // after the starting note has been found
         {
             char buffer[4];
-            if (count >= 10)
+            if (count >= 10) 
             {
-                sprintf(buffer, "%d", count);
+                sprintf(buffer, "%d", count);  // no whitespace VS whitespace for formatting
             }
             else
                 sprintf(buffer, "%d ", count);
