@@ -77,7 +77,7 @@ int main()
                     printf("Enter the scale you would like to transpose to: ");
                     fgets(finalScale, sizeof(finalScale), stdin);
                     finalScale[strcspn(finalScale, "\n")] = '\0'; // remove newline character if needed
-                    if (initialScale[0] != '\0' && searchScale(initialScale, major)) // to search through Major/Minor ScaleArray
+                    if (finalScale[0] != '\0' && searchScale(finalScale, major)) // to search through Major/Minor ScaleArray
                     {
                         break;
                     }
@@ -97,7 +97,7 @@ int main()
                         break; // Breaks out of user validation if the input is 'q'
                     }
 
-                    if (searchNote(input))
+                    if (searchNote(input) && input[0] != '\0')
                     {
                         strcpy(inputList[count], input); // Copy the input string to the array
                         count++;
